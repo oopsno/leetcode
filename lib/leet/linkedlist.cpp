@@ -35,6 +35,17 @@ ListNode *ListNode::build(const std::vector<int> &elements) {
   return head;
 }
 
+void ListNode::release(ListNode *list) {
+  std::vector<ListNode *> record;
+  while (list != nullptr) {
+    record.push_back(list);
+    list = list->next;
+  }
+  for (ListNode *node : record) {
+    delete (node);
+  }
+}
+
 ListNode::vec_t *ListNode::dump() const {
   vec_t *vec = new vec_t();
   const ListNode *list = this;
