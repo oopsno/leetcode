@@ -11,6 +11,7 @@ struct ListNode {
   /* OFFLINE UILITIES */
   ListNode(std::initializer_list<int> elements);
   static ListNode *build(const std::vector<int> &elements);
+  static void release(ListNode* list);
   typedef std::vector<int> vec_t;
   vec_t *dump() const;
   size_t size() const;
