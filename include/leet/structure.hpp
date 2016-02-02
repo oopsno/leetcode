@@ -11,7 +11,7 @@ struct ListNode {
   /* OFFLINE UILITIES */
   ListNode(std::initializer_list<int> elements);
   static ListNode *build(const std::vector<int> &elements);
-  static void release(ListNode* list);
+  static void release(ListNode *list);
   typedef std::vector<int> vec_t;
   vec_t *dump() const;
   size_t size() const;
@@ -25,9 +25,11 @@ struct TreeNode {
   TreeNode *right;
   TreeNode(int x) : val(x), left(nullptr), right(nullptr) { }
 
-  /* OFFLINE UILITIES */
-  static TreeNode *build(const std::vector<int> &elements);
-  std::vector<int> *dump() const;
+  /* OFFLINE UTILITIES */
+  static TreeNode *build(const std::string &serialized);
+  static std::string dump(const TreeNode *root);
+  static bool equal(const TreeNode *lhs, const TreeNode *rhs);
+  static size_t height(const TreeNode *root, const size_t current = 0);
 };
 
 

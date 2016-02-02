@@ -41,3 +41,27 @@ TEST(LinkedList, Access) {
   }
 }
 
+TEST(BinaryTree, Equal) {
+  EXPECT_TRUE(TreeNode::equal(nullptr, nullptr));
+  EXPECT_TRUE(TreeNode::equal(new TreeNode(1), new TreeNode(1)));
+}
+
+TEST(BinaryTree, Height) {
+  EXPECT_EQ(TreeNode::height(nullptr), 0);
+  EXPECT_EQ(TreeNode::height(new TreeNode(0)), 1);
+}
+
+static TreeNode *build_1s23() {
+  TreeNode *root = new TreeNode(1);
+  root->right = new TreeNode(2);
+  root->right->left = new TreeNode(3);
+  return root;
+}
+
+
+TEST(BinaryTree, Build) {
+  EXPECT_EQ(TreeNode::build("{}"), nullptr);
+  EXPECT_TRUE(TreeNode::equal(TreeNode::build("{1}"), new TreeNode(1)));
+  EXPECT_TRUE(TreeNode::equal(TreeNode::build("{1,#,2,3}"), build_1s23()));
+  EXPECT_THROW(TreeNode::build(""), std::invalid_argument);
+}
