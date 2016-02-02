@@ -1,7 +1,5 @@
 #include "leet/structure.hpp"
 #include <string>
-#include <cstring>
-#include <cctype>
 
 const std::string sharp("#");
 

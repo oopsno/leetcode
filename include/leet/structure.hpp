@@ -27,7 +27,6 @@ struct TreeNode {
 
   /* OFFLINE UTILITIES */
   static TreeNode *build(const std::string &serialized);
-  static std::string dump(const TreeNode *root);
   static bool equal(const TreeNode *lhs, const TreeNode *rhs);
   static size_t height(const TreeNode *root, const size_t current = 0);
 };
