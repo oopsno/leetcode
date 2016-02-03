@@ -1,8 +1,9 @@
 #include "leet/structure.hpp"
 #include <string>
 #include <queue>
+#include <cstdlib>
 
-const std::string sharp("#");
+const char *sharp = "#";
 
 
 TreeNode *TreeNode::build(const std::string &serialized) {
@@ -23,38 +24,33 @@ TreeNode *TreeNode::build(const std::string &serialized) {
     return nullptr;
   }
   // tokenize & parse
-  std::queue<std::string> nodes;
   std::queue<TreeNode *> queue;
   char *ss = new char[length - 1];
-  stpncpy(ss, s.c_str() + 1, length - 2);
+  std::strncpy(ss, s.c_str() + 1, length - 2);
   ss[length - 2] = 0;
+  TreeNode *root = nullptr;
   for (char *n = std::strtok(ss, ","); n != nullptr; n = std::strtok(nullptr, ",")) {
-    nodes.push(n);
-  }
-  delete[](ss);
-  // copy to tree
-  TreeNode *root = new TreeNode(std::stoi(nodes.front()));
-  nodes.pop();
-  queue.push(root);
-  while (queue.size() != 0 and nodes.size() != 0) {
-    TreeNode *current = queue.front();
-    queue.pop();
-    const std::string lhs = nodes.front();
-    nodes.pop();
-    if (lhs != sharp) {
-      current->left = new TreeNode(std::stoi(lhs));
-      queue.push(current->left);
-    }
-    if (nodes.size() == 0) {
+    if (root == nullptr) {
+      root = new TreeNode(std::atoi(n));
+      queue.push(root);
       continue;
     }
-    const std::string rhs = nodes.front();
-    nodes.pop();
-    if (rhs != sharp) {
-      current->right = new TreeNode(std::stoi(rhs));
+    TreeNode *current = queue.front();
+    queue.pop();
+    if (std::strcmp(n, sharp) != 0) { // not '#'
+      current->left = new TreeNode(std::atoi(n));
+      queue.push(current->left);
+    }
+    n = std::strtok(nullptr, ",");
+    if (n == nullptr) {
+      break;
+    }
+    if (std::strcmp(n, sharp) != 0) { // not '#'
+      current->right = new TreeNode(std::atoi(n));
       queue.push(current->right);
     }
   }
+  delete[](ss);
   return root;
 }
 
