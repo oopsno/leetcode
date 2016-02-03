@@ -58,10 +58,32 @@ static TreeNode *build_1s23() {
   return root;
 }
 
+static TreeNode *build_12s3s4() {
+  TreeNode *root = new TreeNode(1);
+  TreeNode *current = root;
+  for (int i = 2; i <= 4; ++i) {
+    current->left = new TreeNode(i);
+    current = current->left;
+  }
+  return root;
+}
+
+static TreeNode *build_1s2s3s4() {
+  TreeNode *root = new TreeNode(1);
+  TreeNode *current = root;
+  for (int i = 2; i <= 4; ++i) {
+    current->right = new TreeNode(i);
+    current = current->right;
+  }
+  return root;
+}
+
 
 TEST(BinaryTree, Build) {
   EXPECT_EQ(TreeNode::build("{}"), nullptr);
   EXPECT_TRUE(TreeNode::equal(TreeNode::build("{1}"), new TreeNode(1)));
   EXPECT_TRUE(TreeNode::equal(TreeNode::build("{1,#,2,3}"), build_1s23()));
+  EXPECT_TRUE(TreeNode::equal(TreeNode::build("{1,2,#,3,#,4}"), build_12s3s4()));
+  EXPECT_TRUE(TreeNode::equal(TreeNode::build("{1,#,2,#,3,#,4}"), build_1s2s3s4()));
   EXPECT_THROW(TreeNode::build(""), std::invalid_argument);
 }

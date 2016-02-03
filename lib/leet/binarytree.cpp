@@ -1,43 +1,15 @@
 #include "leet/structure.hpp"
 #include <string>
+#include <queue>
 
 const std::string sharp("#");
 
-static inline int left(int root) {
-  return root + root;
-}
-
-static inline int right(int root) {
-  return left(root) + 1;
-}
-
-static void build_binary_tree(TreeNode *root, const int root_i, std::vector<std::string> &nodes) {
-  int left_i = left(root_i), right_i = right(root_i);
-  int limit = (const int) nodes.size();
-  if (left_i < limit) {
-    const std::string &left_t = nodes[left_i];
-    if (left_t != sharp) {
-      root->left = new TreeNode(std::stoi(left_t));
-      build_binary_tree(root->left, left_i, nodes);
-    } else {
-      nodes.insert(nodes.begin() + right_i + 1, 2, "#");
-      limit += 2;
-    }
-  }
-  if (right_i < limit) {
-    const std::string &right_t = nodes[right_i];
-    if (right_t != sharp) {
-      root->right = new TreeNode(std::stoi(right_t));
-      build_binary_tree(root->right, right_i, nodes);
-    }
-  }
-}
 
 TreeNode *TreeNode::build(const std::string &serialized) {
-  // remove spaces
+  // filter
   std::string s;
   for (char c : serialized) {
-    if (not std::isspace(c)) {
+    if (std::isdigit(c) or c == ',' or c == '{' or c == '}' or c == '#') {
       s.push_back(c);
     }
   }
@@ -50,25 +22,39 @@ TreeNode *TreeNode::build(const std::string &serialized) {
   if (length == 2 || (length == 3 && s[1] == '#')) {
     return nullptr;
   }
-  // tokenize
-  std::vector<std::string> nodes = {"$"};
+  // tokenize & parse
+  std::queue<std::string> nodes;
+  std::queue<TreeNode *> queue;
   char *ss = new char[length - 1];
   stpncpy(ss, s.c_str() + 1, length - 2);
   ss[length - 2] = 0;
-  char *c_node = std::strtok(ss, ",");
-  int counter = 0;
-  while (c_node != nullptr) {
-    counter += 1;
-    const std::string token = c_node;
-    nodes.push_back(token);
-
-    c_node = strtok(nullptr, ",");
+  for (char *n = std::strtok(ss, ","); n != nullptr; n = std::strtok(nullptr, ",")) {
+    nodes.push(n);
   }
   delete[](ss);
   // copy to tree
-  int root_i = 1;
-  TreeNode *root = new TreeNode(std::stoi(nodes[root_i]));
-  build_binary_tree(root, root_i, nodes);
+  TreeNode *root = new TreeNode(std::stoi(nodes.front()));
+  nodes.pop();
+  queue.push(root);
+  while (queue.size() != 0 and nodes.size() != 0) {
+    TreeNode *current = queue.front();
+    queue.pop();
+    const std::string lhs = nodes.front();
+    nodes.pop();
+    if (lhs != sharp) {
+      current->left = new TreeNode(std::stoi(lhs));
+      queue.push(current->left);
+    }
+    if (nodes.size() == 0) {
+      continue;
+    }
+    const std::string rhs = nodes.front();
+    nodes.pop();
+    if (rhs != sharp) {
+      current->right = new TreeNode(std::stoi(rhs));
+      queue.push(current->right);
+    }
+  }
   return root;
 }
 
