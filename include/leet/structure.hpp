@@ -19,6 +19,12 @@ struct ListNode {
 };
 
 
+struct RandomListNode: ListNode {
+  RandomListNode *random;
+  RandomListNode(int x) : ListNode(x), random(nullptr) { }
+};
+
+
 struct TreeNode {
   int val;
   TreeNode *left;
