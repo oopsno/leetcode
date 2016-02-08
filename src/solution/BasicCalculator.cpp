@@ -1,5 +1,4 @@
 #include <string>
-#include <stack>
 #if (defined(OFFLINE))
 #include "leet/structure.hpp"
 namespace X224 {
@@ -11,12 +10,11 @@ class Solution {
 
   int calculate(std::string s) {
     it_t cursor = s.c_str();
-    end = cursor + s.size();
     return parse_expr(cursor);
   }
  private:
   inline char next(it_t &cursor) const {
-    for (char c = *cursor; cursor != end; cursor++, c = *cursor) {
+    for (char c = *cursor; c; c = *++cursor) {
       if (std::isspace(c)) {
         continue;
       }
@@ -27,12 +25,9 @@ class Solution {
 
   inline int parse_int(it_t &cursor) const {
     int value = 0;
-    for (char c = next(cursor); cursor != end; cursor++, c = next(cursor)) {
-      if (std::isspace(c)) {
-        continue;
-      } else if (std::isdigit(c)) {
-        value *= 10;
-        value += c - '0';
+    for (char c = next(cursor); c; c = next(++cursor)) {
+      if (std::isdigit(c)) {
+        value = value * 10 + c - '0';
         continue;
       } else {
         break;
@@ -45,9 +40,9 @@ class Solution {
     const char first = next(cursor);
     int atom;
     if (first == '(') {
-      cursor++; // pass '('
+      cursor++; // skip '('
       atom = parse_expr(cursor);
-      cursor++; // pass ')'
+      cursor++; // skip ')'
     } else {
       atom = parse_int(cursor);
     }
@@ -57,9 +52,9 @@ class Solution {
   inline int parse_expr(it_t &cursor) const {
     int lhs = parse_atom(cursor);
     char c;
-    while ((c = next(cursor)) && c != ')') {
+    while ((c = next(cursor)) && c != ')') { // deal with EOF & nested expressions
       char op = next(cursor);
-      cursor++;
+      cursor++; // skip operator
       int rhs = parse_atom(cursor);
       if (op == '+') {
         lhs += rhs;
@@ -69,7 +64,6 @@ class Solution {
     }
     return lhs;
   }
-  it_t end;
 };
 
 #if (defined(OFFLINE))
