@@ -1,6 +1,4 @@
 #include <string>
-#include <vector>
-#include <stack>
 
 #if (defined(OFFLINE))
 #include "leet/structure.hpp"
@@ -9,45 +7,49 @@ namespace X150 {
 
 class Solution {
  public:
+  Solution() : stack(new int[stack_size]) { }
+  ~Solution() {
+    delete[](stack);
+  }
   int evalRPN(const std::vector<std::string> &tokens) {
-    for (std::string token : tokens) {
+    if (tokens.size() > stack_size) {
+      delete[](stack);
+      stack = new int[tokens.size()];
+      stack_size = tokens.size();
+    }
+    for (const std::string &token : tokens) {
       const char first = token.front();
       if (std::isdigit(first) || token.size() > 1) {
-        stack.push(std::stoi(token));
+        stack[++top] = std::stoi(token);
       } else {
-        int rhs = stack.top();
-        stack.pop();
-        int lhs = stack.top();
-        stack.pop();
-        stack.push(operate(first, lhs, rhs));
+        int rhs = stack[top--];
+        operate(first, stack[top], rhs);
       }
     }
-    int result = stack.top();
-    stack.pop();
-    return result;
+    return stack[top--];
   }
  private:
-  static int operate(const char op, int lhs, int rhs) {
-    int result;
+  static inline void operate(const char op, int &lhs, int rhs) {
     switch (op) {
       case '+':
-        result = lhs + rhs;
+        lhs += rhs;
         break;
       case '-':
-        result = lhs - rhs;
+        lhs -= rhs;
         break;
       case '*':
-        result = lhs * rhs;
+        lhs *= rhs;
         break;
       case '/':
-        result = lhs / rhs;
+        lhs /= rhs;
         break;
       default:
-        result = 0;
+        break;
     };
-    return result;
   }
-  std::stack<int> stack;
+  size_t stack_size = 1 << 18; // 128K will cover all test cases...
+  int *stack;
+  int top = 0;
 };
 
 #if (defined(OFFLINE))
