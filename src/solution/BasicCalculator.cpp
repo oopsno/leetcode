@@ -6,56 +6,47 @@ namespace X224 {
 
 class Solution {
  public:
-  typedef const char *it_t;
-
-  int calculate(std::string s) {
+  static int calculate(const std::string &s) {
     it_t cursor = s.c_str();
     return parse_expr(cursor);
   }
+
  private:
-  inline char next(it_t &cursor) const {
-    for (char c = *cursor; c; c = *++cursor) {
-      if (std::isspace(c)) {
-        continue;
-      }
-      return c;
-    }
-    return '\0';
+  typedef const char *it_t;
+
+  static inline char next(it_t &cursor) {
+    char c = *cursor;
+    for (; c == ' '; c = *++cursor);
+    return c;
   }
 
-  inline int parse_int(it_t &cursor) const {
+  static inline int parse_int(it_t &cursor) {
     int value = 0;
-    for (char c = next(cursor); c; c = next(++cursor)) {
-      if (std::isdigit(c)) {
-        value = value * 10 + c - '0';
-        continue;
-      } else {
-        break;
-      }
+    for (char c = *cursor; '0' <= c && c <= '9'; c = *++cursor) {
+      value = value * 10 + c - '0';
     }
     return value;
   }
 
-  inline int parse_atom(it_t &cursor) const {
-    const char first = next(cursor);
+  static inline int parse_atom(it_t &cursor) {
     int atom;
+    const char first = next(cursor);
     if (first == '(') {
-      cursor++; // skip '('
-      atom = parse_expr(cursor);
-      cursor++; // skip ')'
+      // eval atom & skip '(' ')'
+      atom = parse_expr(++cursor);
+      ++cursor;
     } else {
       atom = parse_int(cursor);
     }
     return atom;
   }
 
-  inline int parse_expr(it_t &cursor) const {
+  static inline int parse_expr(it_t &cursor) {
+    char op;
     int lhs = parse_atom(cursor);
-    char c;
-    while ((c = next(cursor)) && c != ')') { // deal with EOF & nested expressions
-      char op = next(cursor);
-      cursor++; // skip operator
-      int rhs = parse_atom(cursor);
+    while ((op = next(cursor)) && op != ')') { // deal with EOF & nested expressions
+      // skip operator
+      int rhs = parse_atom(++cursor);
       if (op == '+') {
         lhs += rhs;
       } else {
