@@ -49,7 +49,7 @@ with open(os.path.join(curdir, 'leetcode.json')) as jf:
 def format_lines(s, t, u):
     xs = []
     for uid, sol_src in solutions_map.items():
-        fmt = '{} [{}]({}) [[Solution]({})] [[Test]({})]'
+        fmt = '{} | [{}]({}) | [Solution]({}) | [Test]({})'
         us_src = utests_map.get(uid, 'README.md')
         quiz = uid_map[uid]
         line = (int(uid),
@@ -63,9 +63,12 @@ def format_lines(s, t, u):
 
 
 def to_markdown(xs):
-    print('#leetcode\n')
+    print('#leetcode',
+          '',
+          'ID | Quiz | Solution | Unit Test',
+          '---|------|----------| --------- |', sep='\n')
     for x in xs:
-        print(x, '\n')
+        print(x)
 
 
 xs = format_lines(solutions_map, utests_map, uid_map)
