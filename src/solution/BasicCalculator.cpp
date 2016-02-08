@@ -7,15 +7,15 @@ namespace X224 {
 
 class Solution {
  public:
-  typedef std::string::const_iterator it_t;
+  typedef const char *it_t;
 
   int calculate(std::string s) {
-    it_t cursor = s.cbegin();
-    end = s.cend();
+    it_t cursor = s.c_str();
+    end = cursor + s.size();
     return parse_expr(cursor);
   }
  private:
-  inline char next(it_t &cursor) {
+  inline char next(it_t &cursor) const {
     for (char c = *cursor; cursor != end; cursor++, c = *cursor) {
       if (std::isspace(c)) {
         continue;
@@ -25,7 +25,7 @@ class Solution {
     return '\0';
   }
 
-  int parse_int(it_t &cursor) {
+  inline int parse_int(it_t &cursor) const {
     int value = 0;
     for (char c = next(cursor); cursor != end; cursor++, c = next(cursor)) {
       if (std::isspace(c)) {
@@ -41,7 +41,7 @@ class Solution {
     return value;
   }
 
-  int parse_atom(it_t &cursor) {
+  inline int parse_atom(it_t &cursor) const {
     const char first = next(cursor);
     int atom;
     if (first == '(') {
@@ -54,7 +54,7 @@ class Solution {
     return atom;
   }
 
-  int parse_expr(it_t &cursor) {
+  inline int parse_expr(it_t &cursor) const {
     int lhs = parse_atom(cursor);
     char c;
     while ((c = next(cursor)) && c != ')') {
@@ -69,7 +69,6 @@ class Solution {
     }
     return lhs;
   }
-
   it_t end;
 };
 
