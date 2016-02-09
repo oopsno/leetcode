@@ -12,25 +12,28 @@ class Solution {
     int int_value;
     bool negate = false;
     const char *cursor = str.c_str();
+    char current;
     // Discards any whitespace characters
     while (std::isspace(*cursor)) {
       ++cursor;
     }
     // optional plus or minus sign
-    if (*cursor == '-') {
+    current = *cursor;
+    if (current == '-') {
       negate = true;
       ++cursor;
-    } else if (*cursor == '+') {
+    }
+    if (current == '+') {
       ++cursor;
     }
     // takes as many characters as possible to form a valid integer number representation
     for (char c = *cursor; c; c = *++cursor) {
       if (std::isdigit(c)) {
         int64_t value_ = value * 10 + c - '0';
-        if (value_ > INT_MAX and not negate) {
+        if (value_ >= INT_MAX and not negate) {
           value = INT_MAX;
           break;
-        } else if (-value_ < INT_MIN and negate) {
+        } else if (value_ >= int64_t(INT_MAX) + 1 and negate) {
           value = INT_MIN;
           break;
         } else {
