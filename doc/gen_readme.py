@@ -6,8 +6,8 @@ import re
 import json
 
 
-curdir = os.path.abspath(os.path.curdir)
-pardir = os.path.abspath(os.path.pardir)
+curdir = os.path.abspath(os.path.join(__file__, '..'))
+pardir = os.path.abspath(os.path.join(curdir, '..'))
 page_root = 'https://github.com/oopsno/leetcode/blob/master/'
 
 
