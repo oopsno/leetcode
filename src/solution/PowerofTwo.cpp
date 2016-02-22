@@ -5,17 +5,8 @@ namespace X231 {
 
 class Solution {
  public:
-  bool isPowerOfTwo(int n) {
-    if (n <= 0) {
-      return false;
-    }
-    int count = 0;
-    for (int i = 0, flag = 1; i < sizeof(int)*8; i++, flag <<= 1) {
-      if (n == flag) {
-        count += 1;
-      }
-    }
-    return count == 1;
+  static bool isPowerOfTwo(int64_t n) {
+    return n > 0 and (INT_MAX + 1LL) % n == 0;
   }
 };
 
