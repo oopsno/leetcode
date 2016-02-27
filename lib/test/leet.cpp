@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 #include "leet/structure.hpp"
+#include "leet/iterator.hpp"
 
 TEST(LinkedList, Build) {
   std::vector<int> vec_empty = {};
@@ -86,4 +87,29 @@ TEST(BinaryTree, Build) {
   EXPECT_TRUE(TreeNode::equal(TreeNode::build("{1,2,#,3,#,4}"), build_12s3s4()));
   EXPECT_TRUE(TreeNode::equal(TreeNode::build("{1,#,2,#,3,#,4}"), build_1s2s3s4()));
   EXPECT_THROW(TreeNode::build(""), std::invalid_argument);
+}
+
+TEST(Iterator, Construct) {
+  const std::vector<int> elements{0, 1};
+  Iterator first = elements;
+  EXPECT_TRUE(first.hasNext());
+  EXPECT_EQ(first.next(), elements[0]);
+  Iterator second = first;
+  EXPECT_TRUE(second.hasNext());
+  EXPECT_EQ(second.next(), elements[1]);
+  EXPECT_FALSE(second.hasNext());
+  EXPECT_TRUE(first.hasNext());
+  EXPECT_EQ(first.next(), elements[1]);
+  EXPECT_FALSE(first.hasNext());
+}
+
+TEST(Iterator, Iteration) {
+  const std::vector<int> elements{0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+  Iterator it = elements;
+  std::vector<int> duplication(elements.size());
+  std::generate(duplication.begin(), duplication.end(), [&]() {
+    return it.next();
+  });
+  EXPECT_EQ(elements, duplication);
+  EXPECT_FALSE(it.hasNext());
 }
