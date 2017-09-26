@@ -3,34 +3,34 @@
  */
 
 #include <cstdlib>
+#include <cstdint>
 #include "leetcode.hpp"
 
 using ListNode = LeetCode::ListNode<int>;
 
 class Solution {
  public:
-  ListNode *addTwoNumbers(ListNode *l1, ListNode *l2) {
+  inline int digit(ListNode *node) {
+    return node == nullptr ? 0 : node->val;
+  }
+  inline void step(ListNode *&node) {
+    if (node != nullptr) {
+      node = node->next;
+    }
+  }
+  inline int pushDigit(ListNode *&head, int digit) {
+    const auto x = std::div(digit, 10);
+    head->next = new ListNode(x.rem);
+    head = head->next;
+    return x.quot;
+  }
+  ListNode *addTwoNumbers(ListNode *lhs, ListNode *rhs) {
     static auto root = ListNode(0);
     auto head = &root;
     int carry = 0;
-    while (l1 != nullptr and l2 != nullptr) {
-      const auto x = std::div(l1->val + l2->val + carry, 10);
-      carry = x.quot;
-      head->next = new ListNode(x.rem);
-      head = head->next;
-      l1 = l1->next;
-      l2 = l2->next;
-    }
-    auto rest = l1 != nullptr ? l1 : l2;
-    while (rest != nullptr) {
-      const auto x = std::div(rest->val + carry, 10);
-      carry = x.quot;
-      head->next = new ListNode(x.rem);
-      head = head->next;
-      rest = rest->next;
-    }
-    if (carry != 0) {
-      head->next = new ListNode(carry);
+    while (lhs != nullptr or rhs != nullptr or carry > 0) {
+      carry = pushDigit(head, digit(lhs) + digit(rhs) + carry);
+      step(lhs); step(rhs);
     }
     return root.next;
   }
