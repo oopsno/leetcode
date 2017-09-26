@@ -1,3 +1,6 @@
+# ignore Catch
+
+include/catch.hpp
 
 # Created by https://www.gitignore.io/api/c++,linux,osx,cmake,jetbrains,vim
 
@@ -51,7 +54,8 @@
 .LSOverride
 
 # Icon must end with two \r
-Icon
+Icon
+
 
 # Thumbnails
 ._*
