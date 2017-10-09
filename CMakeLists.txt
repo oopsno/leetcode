@@ -14,7 +14,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED 17)
 set(CMAKE_CXX_STANDARD 17)
 
 # Including custom headers
-include_directories(${INCLUDE})
+include_directories(include)
 
 # Main function for GTEST
 add_library(gtest-main src/main.cpp)
