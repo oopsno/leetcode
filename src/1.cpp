@@ -55,20 +55,22 @@ class Solution {
   }
 };
 
-#include <catch.hpp>
+#include <gtest/gtest.h>
 
-TEST_CASE("Two Sum") {
+TEST(TwoSum, Testcase1) {
   auto solution = Solution();
-  SECTION("case - 1") {
-    const std::vector<int> xs{3, 2, 4}, ys{1, 2};
-    REQUIRE(solution.twoSum(xs, 6) == ys);
-  }
-  SECTION("case - 2") {
-    const std::vector<int> xs{0, 2, 4, 0}, ys{0, 3};
-    REQUIRE(solution.twoSum(xs, 0) == ys);
-  }
-  SECTION("case - 3") {
-    const std::vector<int> xs{3, 3}, ys{0, 1};
-    REQUIRE(solution.twoSum(xs, 6) == ys);
-  }
+  const std::vector<int> xs{3, 2, 4}, ys{1, 2};
+  ASSERT_EQ(solution.twoSum(xs, 6), ys);
+}
+
+TEST(TwoSum, Testcase2) {
+  auto solution = Solution();
+  const std::vector<int> xs{0, 2, 4, 0}, ys{0, 3};
+  ASSERT_EQ(solution.twoSum(xs, 0), ys);
+}
+
+TEST(TwoSum, Testcase3) {
+  auto solution = Solution();
+  const std::vector<int> xs{3, 3}, ys{0, 1};
+  ASSERT_EQ(solution.twoSum(xs, 6), ys);
 }

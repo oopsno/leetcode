@@ -62,32 +62,23 @@ struct Case {
   ListNode *lhs, *rhs, *sum;
 };
 
-#include <catch.hpp>
-TEST_CASE("Add Two Numbers") {
+#include <gtest/gtest.h>
+
+TEST(AddTwoNumbers, Testcases) {
   auto solution = Solution();
-  SECTION("case - 1") {
-    const auto c = Case(342, 465);
-    REQUIRE(solution.addTwoNumbers(c.lhs, c.rhs)->equalTo(c.sum));
-    REQUIRE(solution.addTwoNumbers(c.rhs, c.lhs)->equalTo(c.sum));
-  }
-  SECTION("case - 2") {
-    const auto c = Case(0, 19);
-    REQUIRE(solution.addTwoNumbers(c.lhs, c.rhs)->equalTo(c.sum));
-    REQUIRE(solution.addTwoNumbers(c.rhs, c.lhs)->equalTo(c.sum));
-  }
-  SECTION("case - 3") {
-    const auto c = Case(1, 19);
-    REQUIRE(solution.addTwoNumbers(c.lhs, c.rhs)->equalTo(c.sum));
-    REQUIRE(solution.addTwoNumbers(c.rhs, c.lhs)->equalTo(c.sum));
-  }
-  SECTION("case - 4") {
-    const auto c = Case(99, 999);
-    REQUIRE(solution.addTwoNumbers(c.lhs, c.rhs)->equalTo(c.sum));
-    REQUIRE(solution.addTwoNumbers(c.rhs, c.lhs)->equalTo(c.sum));
-  }
-  SECTION("case - 5") {
-    const auto c = Case(999, 999);
-    REQUIRE(solution.addTwoNumbers(c.lhs, c.rhs)->equalTo(c.sum));
-    REQUIRE(solution.addTwoNumbers(c.rhs, c.lhs)->equalTo(c.sum));
-  }
+  auto c = Case(342, 465);
+  ASSERT_TRUE(solution.addTwoNumbers(c.lhs, c.rhs)->equalTo(c.sum));
+  ASSERT_TRUE(solution.addTwoNumbers(c.rhs, c.lhs)->equalTo(c.sum));
+  c = Case(0, 19);
+  ASSERT_TRUE(solution.addTwoNumbers(c.lhs, c.rhs)->equalTo(c.sum));
+  ASSERT_TRUE(solution.addTwoNumbers(c.rhs, c.lhs)->equalTo(c.sum));
+  c = Case(1, 19);
+  ASSERT_TRUE(solution.addTwoNumbers(c.lhs, c.rhs)->equalTo(c.sum));
+  ASSERT_TRUE(solution.addTwoNumbers(c.rhs, c.lhs)->equalTo(c.sum));
+  c = Case(99, 999);
+  ASSERT_TRUE(solution.addTwoNumbers(c.lhs, c.rhs)->equalTo(c.sum));
+  ASSERT_TRUE(solution.addTwoNumbers(c.rhs, c.lhs)->equalTo(c.sum));
+  c = Case(999, 999);
+  ASSERT_TRUE(solution.addTwoNumbers(c.lhs, c.rhs)->equalTo(c.sum));
+  ASSERT_TRUE(solution.addTwoNumbers(c.rhs, c.lhs)->equalTo(c.sum));
 }
