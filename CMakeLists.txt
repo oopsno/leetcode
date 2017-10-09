@@ -32,6 +32,7 @@ endfunction(add_solution)
 add_solution(0001 src/1.cpp)
 add_solution(0002 src/2.cpp)
 add_solution(0003 src/3.cpp)
+add_solution(0258 src/258.cpp)
 
 if (${Boost_FOUND})
     add_executable(generate_readme src/generate_readme.cpp)
