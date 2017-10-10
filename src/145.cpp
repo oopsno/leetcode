@@ -27,7 +27,7 @@ class Solution {
 #include <gtest/gtest.h>
 
 TEST(BinaryTreeTraversal, Postorder) {
-  auto tree = new TreeNode(2, new TreeNode(1), new TreeNode(3));
+  using Tree = LeetCode::Tree<int>;
+  auto tree = Tree{2, 1, 3};
   ASSERT_EQ(Solution().postorderTraversal(tree), (std::vector<int>{1, 3, 2}));
-  TreeNode::release(tree);
 }

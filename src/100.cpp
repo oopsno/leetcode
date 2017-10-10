@@ -22,13 +22,12 @@ class Solution {
 #include <gtest/gtest.h>
 
 TEST(BinaryTreeIsSame, Testcases) {
-  auto x = new TreeNode(2, new TreeNode(1), new TreeNode(3, new TreeNode(4), nullptr));
-  auto y = new TreeNode(2, new TreeNode(1), new TreeNode(3, new TreeNode(4), nullptr));
+  using Tree = LeetCode::Tree<int>;
+  auto x = Tree{1, 2, 3};
+  auto y = Tree{1, 2, 3};
   ASSERT_TRUE(Solution().isSameTree(x, y));
   ASSERT_TRUE(Solution().isSameTree(x, x));
   ASSERT_TRUE(Solution().isSameTree(nullptr, nullptr));
   ASSERT_FALSE(Solution().isSameTree(nullptr, y));
   ASSERT_FALSE(Solution().isSameTree(x, nullptr));
-  TreeNode::release(x);
-  TreeNode::release(y);
 }
