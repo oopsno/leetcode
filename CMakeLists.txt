@@ -23,16 +23,20 @@ add_library(gtest-main src/main.cpp)
 enable_testing()
 
 # Add all solutions
-function(add_solution NAME SOURCE)
+macro(add_solution NAME SOURCE)
+  list(APPEND SOLUTIONS ${SOURCE})
   add_executable(${NAME} ${SOURCE})
   target_link_libraries(${NAME} gtest-main)
   add_test(${NAME} ${NAME})
-endfunction(add_solution)
+endmacro(add_solution)
 
 add_solution(0001 src/1.cpp)
 add_solution(0002 src/2.cpp)
 add_solution(0003 src/3.cpp)
 add_solution(0258 src/258.cpp)
+
+add_executable(unittest "${SOLUTIONS}")
+target_link_libraries(unittest gtest-main)
 
 if (${Boost_FOUND})
     add_executable(generate_readme src/generate_readme.cpp)
