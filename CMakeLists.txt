@@ -33,6 +33,7 @@ endmacro(add_solution)
 add_solution(0001 src/1.cpp)
 add_solution(0002 src/2.cpp)
 add_solution(0003 src/3.cpp)
+add_solution(0062 src/62.cpp)
 add_solution(0258 src/258.cpp)
 
 add_executable(unittest "${SOLUTIONS}")
