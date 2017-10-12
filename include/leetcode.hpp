@@ -4,6 +4,10 @@
 #include <map>
 #include <vector>
 #include <optional>
+#include <functional>
+
+#define GTEST_DONT_DEFINE_TEST 1
+#include <gtest/gtest.h>
 
 namespace LeetCode {
 
@@ -68,7 +72,7 @@ struct Tree {
     TreeNode<T>::release(node);
   }
 
-  inline explicit operator TreeNode<T> *() {
+  inline operator TreeNode<T> *() {
     return node;
   }
 
@@ -103,9 +107,30 @@ struct ListNode {
   ListNode *next;
 };
 
+}
+
 enum Category {
-  BinaryTree, List, Math
+  /** 线性结构 */
+  Array, LinkedList, Stack, Heep, Queue, String,
+  /** 查找表 */
+  Map, HashTable,
+  /** 树 */
+  Trees, BinaryTree, BinarySearchTree, Trie,
+  /** 图 */
+  Graph, DFS, BFS, TopRecursion, Pointers, TologicalSort,
+  /** 方法 */
+  DivideAndConquer, DynamicProgramming, Backtracking, ReservoirSampling, Greedy, Memorization,
+  /** 设计 */
+  Design,
+  /** 专项 */
+  BinarySearch, Sort, BitManipulation, Minimax, Implement,
+  /** 数学 */
+  Geometry, Math,
+  /** 其他 */
+  Misc
 };
+
+namespace LeetCode {
 
 struct SolutionDescriptor {
   SolutionDescriptor() = default;
@@ -134,11 +159,30 @@ struct SolutionDescriptorInjector {
                              std::vector<Category> &&categories);
 };
 
+template<typename Solution, typename Body>
+struct TestBody {
+  explicit TestBody(Body body) : s{}, body{body} {};
+  TestBody (TestBody& tb) : s{tb.s}, body{tb.body} {};
+  Solution s;
+  Body body;
+};
+
 }
 
-using LeetCode::Category::BinaryTree;
-using LeetCode::Category::Math;
-using LeetCode::Category::List;
+using ListNode = LeetCode::ListNode<int>;
+using TreeNode = LeetCode::TreeNode<int>;
+using Tree = LeetCode::Tree<int>;
 
 #define DESCRIPTION(id, title, ...) \
-  static LeetCode::SolutionDescriptorInjector __sdi_##__LINE__##__(id, __FILE__, title, {__VA_ARGS__})
+  static const LeetCode::SolutionDescriptorInjector __descriptor__(id, __FILE__, title, {__VA_ARGS__})
+
+#define TEST_BODY(test_case, test_name) __test_body_##test_case##test_name##__
+
+#define TEST(test_case, test_name)                                                                          \
+  void TEST_BODY(test_case, test_name)(Solution &);                                                         \
+  GTEST_TEST(test_case, test_name) {                                                                        \
+    LeetCode::TestBody<Solution, std::function<void(Solution&)>> __test__{TEST_BODY(test_case, test_name)}; \
+    __test__.body(__test__.s);                                                                              \
+  }                                                                                                         \
+  void TEST_BODY(test_case, test_name)(Solution &s)
+
