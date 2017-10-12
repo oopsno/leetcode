@@ -1,8 +1,6 @@
-#include <gtest/gtest.h>
 #include "leetcode.hpp"
 
-TEST(Tree, Build) {
-  using Tree = LeetCode::Tree<int>;
+GTEST_TEST(Tree, Build) {
   auto x = Tree{1, 2, 3, std::nullopt, 4};
   // 1st level
   ASSERT_EQ(x->val, 1);
@@ -14,4 +12,10 @@ TEST(Tree, Build) {
   ASSERT_EQ(x->left->left, nullptr);
   ASSERT_EQ(x->left->right->val, 4);
   ASSERT_TRUE(x->left->right->is_leaf());
+}
+
+GTEST_TEST(List, Build) {
+  auto xs = List{1, 2, 3};
+  ASSERT_EQ(ListNode::size(xs), 3);
+  ASSERT_EQ(xs.to_list(), (std::vector<int>{1, 2, 3}));
 }

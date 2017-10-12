@@ -61,7 +61,7 @@ struct Tree {
   explicit Tree(const Container<std::optional<T>> &xs) : node{TreeNode<T>::build(xs, 1)} {}
 
   template<template<typename> typename Container=std::vector>
-  explicit Tree(const Container<std::optional<T>> &&xs) : node{TreeNode<T>::build(std::move(xs), 1)} {}
+  explicit Tree(Container<std::optional<T>> &&xs) : node{TreeNode<T>::build(std::move(xs), 1)} {}
 
   Tree(std::initializer_list<std::optional<T>> il) : node{
       TreeNode<T>::build(std::vector<std::optional<T>>(il.begin(), il.end()), 1)} {}
@@ -89,7 +89,8 @@ struct Tree {
 
 template<typename T>
 struct ListNode {
-  explicit ListNode(T x) : val(x), next(nullptr) {}
+  explicit ListNode(T x) : val{x}, next{nullptr} {}
+  ListNode(T x,  ListNode<T> *next) : val{x}, next{next} {}
 
   bool equalTo(const ListNode *rhs) const {
     auto lhs = this;
@@ -103,8 +104,58 @@ struct ListNode {
     return lhs == nullptr and rhs == nullptr;
   }
 
+  template<template<typename> typename Container=std::vector>
+  static ListNode<T> *build(const Container<T> &xs) {
+    ListNode<T> *head = nullptr, *current = nullptr;
+    for (auto iter = xs.cbegin(); iter != xs.cend(); iter++) {
+      if (head == nullptr) {
+        head = current = new ListNode<T>(*iter);
+      } else {
+        current->next = new ListNode<T>(*iter);
+        current = current->next;
+      }
+    }
+    return head;
+  }
+
+  static size_t size(ListNode<T> *xs) {
+    size_t length = 0;
+    while (xs != nullptr) {
+      xs = xs->next;
+      length += 1;
+    }
+    return length;
+  }
+
   T val;
   ListNode *next;
+};
+
+template<typename T>
+struct List {
+  template<template<typename> typename Container=std::vector>
+  explicit List(const Container<T> &xs) : node{ListNode<T>::build(xs)}{}
+
+  template<template<typename> typename Container=std::vector>
+  explicit List(const Container<T> &&xs) : node{ListNode<T>::build(std::move(xs))}{}
+
+  explicit List(std::initializer_list<T> il) : node{ListNode<T>::build(std::vector<T>(il.begin(), il.end()))} {}
+
+  inline operator ListNode<T> *() {
+    return node;
+  }
+
+  std::vector<T> to_list() const {
+    ListNode<T> *head = node;
+    std::vector<T> xs;
+    while (head != nullptr) {
+      xs.push_back(head->val);
+      head = head->next;
+    }
+    return xs;
+  }
+
+  ListNode<T> *node;
 };
 
 }
@@ -170,6 +221,7 @@ struct TestBody {
 }
 
 using ListNode = LeetCode::ListNode<int>;
+using List = LeetCode::List<int>;
 using TreeNode = LeetCode::TreeNode<int>;
 using Tree = LeetCode::Tree<int>;
 
