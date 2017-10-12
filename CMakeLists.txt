@@ -17,7 +17,10 @@ set(CMAKE_CXX_STANDARD 17)
 include_directories(include)
 
 # Main function for GTEST
-add_library(gtest-main src/main.cpp)
+add_library(gtest-main test/gtest-main.cpp)
+
+# LeetCode Supports
+add_library(leetcode src/leetcode.cpp)
 
 # Enable testing
 enable_testing()
@@ -26,7 +29,7 @@ enable_testing()
 macro(add_solution NAME SOURCE)
   list(APPEND SOLUTIONS ${SOURCE})
   add_executable(${NAME} ${SOURCE})
-  target_link_libraries(${NAME} gtest-main)
+  target_link_libraries(${NAME} gtest-main leetcode)
   add_test(${NAME} ${NAME})
 endmacro(add_solution)
 
@@ -44,10 +47,13 @@ add_solution(0144 src/144.cpp)
 add_solution(0145 src/145.cpp)
 add_solution(0258 src/258.cpp)
 
-add_executable(unittest "${SOLUTIONS}")
-target_link_libraries(unittest gtest-main)
+add_executable(all-unittests "${SOLUTIONS}")
+target_link_libraries(all-unittests gtest-main leetcode)
+
+add_executable(leetcode-unittest test/gtest-main.cpp test/leetcode.cpp)
+target_link_libraries(leetcode-unittest leetcode)
 
 if (${Boost_FOUND})
-    add_executable(generate_readme src/generate_readme.cpp)
-    target_link_libraries(generate_readme ${Boost_LIBRARIES})
+    add_executable(generate-readme utils/generate_readme.cpp "${SOLUTIONS}")
+    target_link_libraries(generate-readme leetcode ${Boost_LIBRARIES})
 endif()

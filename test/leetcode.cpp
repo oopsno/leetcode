@@ -1,5 +1,4 @@
 #include <gtest/gtest.h>
-
 #include "leetcode.hpp"
 
 TEST(Tree, Build) {
@@ -15,9 +14,4 @@ TEST(Tree, Build) {
   ASSERT_EQ(x->left->left, nullptr);
   ASSERT_EQ(x->left->right->val, 4);
   ASSERT_TRUE(x->left->right->is_leaf());
-}
-
-int main(int argc, char **argv) {
-  ::testing::InitGoogleTest(&argc, argv);
-  return RUN_ALL_TESTS();
 }
