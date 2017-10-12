@@ -20,7 +20,7 @@ include_directories(include)
 add_library(gtest-main test/gtest-main.cpp)
 
 # LeetCode Supports
-add_library(leetcode src/leetcode.cpp)
+add_library(leetcode src/leetcode.cpp include/leetcode.hpp)
 
 # Enable testing
 enable_testing()

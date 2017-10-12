@@ -11,7 +11,7 @@ template<typename T>
 struct TreeNode {
   TreeNode(T value, TreeNode<T> *left, TreeNode<T> *right) : val{value}, left{left}, right{right} {}
 
-  TreeNode(T value) : val{value}, left{nullptr}, right{nullptr} {}
+  explicit TreeNode(T value) : val{value}, left{nullptr}, right{nullptr} {}
 
   bool is_leaf() const {
     return left == nullptr and right == nullptr;
@@ -54,21 +54,21 @@ struct TreeNode {
 template<typename T>
 struct Tree {
   template<template<typename> typename Container=std::vector>
-  Tree(const Container<std::optional<T>> &xs) : node{TreeNode<T>::build(xs, 1)} {}
+  explicit Tree(const Container<std::optional<T>> &xs) : node{TreeNode<T>::build(xs, 1)} {}
 
   template<template<typename> typename Container=std::vector>
-  Tree(const Container<std::optional<T>> &&xs) : node{TreeNode<T>::build(std::move(xs), 1)} {}
+  explicit Tree(const Container<std::optional<T>> &&xs) : node{TreeNode<T>::build(std::move(xs), 1)} {}
 
   Tree(std::initializer_list<std::optional<T>> il) : node{
       TreeNode<T>::build(std::vector<std::optional<T>>(il.begin(), il.end()), 1)} {}
 
-  Tree(TreeNode<T> *node) : node{node} {}
+  explicit Tree(TreeNode<T> *node) : node{node} {}
 
   ~Tree() {
     TreeNode<T>::release(node);
   }
 
-  inline operator TreeNode<T> *() {
+  inline explicit operator TreeNode<T> *() {
     return node;
   }
 
@@ -76,7 +76,7 @@ struct Tree {
     return node;
   }
 
-  operator==(const Tree<T> &rhs) const {
+  bool operator==(const Tree<T> &rhs) const {
     TreeNode<T>::is_same(node, rhs.node);
   }
 
@@ -111,9 +111,9 @@ struct SolutionDescriptor {
   SolutionDescriptor() = default;
   SolutionDescriptor(const SolutionDescriptor &descriptor);
   SolutionDescriptor(SolutionDescriptor &&descriptor) noexcept;
-  SolutionDescriptor(const size_t id, std::string &&path, std::string &&title, std::vector<Category> &&categories);
+  SolutionDescriptor(size_t id, std::string &&path, std::string &&title, std::vector<Category> &&categories);
   SolutionDescriptor &operator=(const SolutionDescriptor &descriptor);
-  size_t id;
+  size_t id = 0;
   std::string path, title;
   std::vector<Category> categories;
 };
@@ -128,7 +128,7 @@ struct SolutionManager {
 extern SolutionManager solution_manager;
 
 struct SolutionDescriptorInjector {
-  SolutionDescriptorInjector(const size_t id,
+  SolutionDescriptorInjector(size_t id,
                              std::string &&path,
                              std::string &&title,
                              std::vector<Category> &&categories);

@@ -15,7 +15,7 @@ SolutionDescriptor::SolutionDescriptor(const size_t id,
                                        std::string &&path,
                                        std::string &&title,
                                        std::vector<Category> &&categories)
-    : id{std::move(id)}, path{std::move(path)}, title{std::move(title)}, categories{std::move(categories)} {}
+    : id{id}, path{std::move(path)}, title{std::move(title)}, categories{std::move(categories)} {}
 
 SolutionDescriptor &SolutionDescriptor::operator=(const SolutionDescriptor &descriptor) {
   id = descriptor.id;
