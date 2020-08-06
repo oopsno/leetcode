@@ -6,9 +6,6 @@ find_package(GTest 1.8 REQUIRED)
 include_directories(${GTEST_INCLUDE_DIR})
 link_libraries(${GTEST_LIBRARIES})
 
-# Using Boost.Filesystem
-find_package(Boost 1.64 QUIET COMPONENTS filesystem)
-
 # Using C++17
 set(CMAKE_CXX_STANDARD_REQUIRED 17)
 set(CMAKE_CXX_STANDARD 17)
@@ -56,8 +53,3 @@ target_link_libraries(all-unittests gtest-main leetcode)
 
 add_executable(leetcode-unittest test/gtest-main.cpp test/leetcode.cpp)
 target_link_libraries(leetcode-unittest leetcode)
-
-if (${Boost_FOUND})
-    add_executable(generate-readme utils/generate_readme.cpp "${SOLUTIONS}")
-    target_link_libraries(generate-readme leetcode ${Boost_LIBRARIES})
-endif()
