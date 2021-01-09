@@ -25,10 +25,10 @@ template <typename ValueType> struct Result {
   bool should_be(value_type &&expected) {
     if constexpr (std::is_integral_v<value_type>) {
       if (expected != actual) {
-        fmt::print(fmt::fg(fmt::color::red), "ERROR: expected {}, got {}\n", expected, actual);
+        fmt::print(fmt::fg(fmt::color::red), "❌ expected {}, got {}\n", expected, actual);
         return false;
       } else {
-        fmt::print(fmt::fg(fmt::color::light_green), "CORRECT: expected {}, got {}\n", expected, actual);
+        fmt::print(fmt::fg(fmt::color::light_green), "🗸 expected {}, got {}\n", expected, actual);
       }
     }
     return false;
@@ -47,13 +47,13 @@ struct EndPoint {
 
   explicit EndPoint(fn_type &&fn) : fn{fn}, solution{} {}
 
-  output_type operator()(Input... input) { return (solution.*fn)(input...); }
+  output_type operator()(std::remove_cvref_t<Input>... input) { return (solution.*fn)(input...); }
 
   template <typename T>
   using literal_t = std::enable_if_t<not std::is_same_v<T, std::string>, std::string>;
 
   output_type from_literal(literal_t<Input>... input) {
-    return operator()(leetcode::deserializer<Input>()(input)...);
+    return operator()(leetcode::deserializer<std::remove_cvref_t<Input>>()(input)...);
   }
 
   Result<output_type> result_of(Input... input) {
@@ -61,8 +61,7 @@ struct EndPoint {
   }
 
   Result<output_type> result_of(literal_t<Input>... input) {
-    return Result<output_type>(operator()(
-        leetcode::deserializer<Input>()(input)...));
+    return Result<output_type>(operator()(leetcode::deserializer<std::remove_cvref_t<Input>>()(input)...));
   }
 };
 
