@@ -63,6 +63,10 @@ template <> struct deserializer<std::string> {
   }
 };
 
+template <> struct deserializer<int> {
+  int operator()(std::string literal) const { return stringToInteger(literal); }
+};
+
 template <> struct deserializer<bool> {
   bool operator()(std::string literal) const { return stringToBool(literal); }
 };
