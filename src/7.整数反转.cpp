@@ -36,7 +36,8 @@ public:
 
 int main() {
   auto endpoint = quicktest::EndPoint(&Solution::reverse);
-  endpoint.result_of(123).should_be(321);
-  endpoint.result_of("-1234").should_be("-4321");
-  return 0;
+  return endpoint.assert({
+    endpoint.result_of(123).should_be(321),
+    endpoint.result_of("-1234").should_be("-4321")
+  });
 }
