@@ -22,6 +22,15 @@ U deserialize(std::string literal) {
   return leetcode::deserializer<U>()(literal);
 }
 
+template<typename T>
+struct is_vector_t : std::bool_constant<false> {};
+
+template<typename T>
+struct is_vector_t<std::vector<T>> : std::bool_constant<true> {};
+
+template<typename T>
+bool is_vector_v = is_vector_t<T>::value;
+
 template <typename ValueType>
 struct Thunk {
   using value_type = ValueType;
@@ -30,18 +39,24 @@ struct Thunk {
   Thunk(value_type &&expected, value_type &&actual)
       : expected(expected), actual(actual) {}
 
-  bool compare() const {
-    if constexpr (std::is_integral_v<value_type>) {
+  bool compare(size_t ith, size_t total) const {
+    const auto passed = fmt::fg(fmt::color::light_green);
+    const auto failed = fmt::fg(fmt::color::orange_red);
+    if constexpr (std::is_integral_v<value_type> or is_vector_v<value_type>) {
       if (expected != actual) {
-        fmt::print(fmt::fg(fmt::color::red), "❌ expected {}, got {}\n",
+        fmt::print(failed, "[{} / {}] expected {}, got {}\n", ith, total,
                    expected, actual);
         return false;
       } else {
-        fmt::print(fmt::fg(fmt::color::light_green),
-                   "🗸 expected {}, got {}\n", expected, actual);
+        fmt::print(passed, "[{} / {}] expected {}, got {}\n", ith, total,
+                   expected, actual);
+        return true;
       }
+    } else {
+      const auto not_impl = fmt::fg(fmt::color::gray);
+      fmt::print(not_impl, "[{} / {}] case not supported\n", ith, total);
+      return false;
     }
-    return false;
   }
 };
 
@@ -90,10 +105,16 @@ struct EndPoint {
     return Result<output_type>(operator()(deserialize<Input>(input)...));
   }
 
-  int assert(std::vector<Thunk<output_type>> ts) const {
-    return ts.size() == std::count_if(ts.begin(), ts.end(), [](auto &thunk) {
-             return thunk.compare();
-           });
+  int ensure(std::vector<Thunk<output_type>> thunks) const {
+    size_t passed = 0;
+    for (size_t i = 0; i < thunks.size(); ++i) {
+      if (thunks[i].compare(i + 1, thunks.size())) {
+        passed += 1;
+      }
+    }
+    const auto style = fmt::fg(fmt::color::light_green);
+    fmt::print(style, "[{} / {}] cases passed\n", passed, thunks.size());
+    return passed != thunks.size();
   }
 };
 

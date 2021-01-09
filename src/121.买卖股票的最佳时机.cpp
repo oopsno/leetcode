@@ -50,7 +50,7 @@ public:
 
 int main() {
   auto endpoint = quicktest::EndPoint(&rmq::Solution::maxProfit);
-  return endpoint.assert({
+  return endpoint.ensure({
     endpoint.result_of("[7,1,5,3,6,4]").should_be(5),
     endpoint.result_of("[7,6,4,3,1]").should_be(0)
   });
