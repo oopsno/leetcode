@@ -6,6 +6,9 @@
 
 #include <string>
 #include <vector>
+
+#include <nlohmann/json.hpp>
+
 namespace leetcode {
 struct ListNode {
   int val;
@@ -39,6 +42,13 @@ void prettyPrintLinkedList(ListNode *node);
 
 template <typename T> struct deserializer;
 
+template <> struct deserializer<std::vector<std::vector<int>>> {
+  std::vector<std::vector<int>> operator()(std::string literal) const {
+    const auto document = nlohmann::json::parse(literal);
+    return document.get<std::vector<std::vector<int>>>();
+  }
+};
+
 template <> struct deserializer<std::vector<int>> {
   std::vector<int> operator()(std::string literal) const {
     return stringToIntegerVector(literal);
@@ -59,7 +69,7 @@ template <> struct deserializer<TreeNode *> {
 
 template <> struct deserializer<std::string> {
   std::string operator()(std::string literal) const {
-    return stringToString(literal);
+    return literal;
   }
 };
 
