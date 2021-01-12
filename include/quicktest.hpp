@@ -29,7 +29,7 @@ template<typename T>
 struct is_vector_t<std::vector<T>> : std::bool_constant<true> {};
 
 template<typename T>
-bool is_vector_v = is_vector_t<T>::value;
+constexpr bool is_vector_v = is_vector_t<T>::value;
 
 template <typename ValueType>
 struct Thunk {
@@ -42,7 +42,7 @@ struct Thunk {
   bool compare(size_t ith, size_t total) const {
     const auto passed = fmt::fg(fmt::color::light_green);
     const auto failed = fmt::fg(fmt::color::orange_red);
-    if constexpr (std::is_integral_v<value_type> or is_vector_v<value_type>) {
+    if constexpr (not std::is_pointer_v<value_type>) {
       if (expected != actual) {
         fmt::print(failed, "[{} / {}] expected {}, got {}\n", ith, total,
                    expected, actual);
@@ -67,8 +67,7 @@ struct Result {
 
   explicit Result(value_type &&actual) : actual(actual) {}
 
-  template <typename = disable_if_is_t<value_type, std::string>>
-  Thunk<value_type> should_be(std::string expected_literal) {
+  Thunk<value_type> should_be(const char * expected_literal) {
     return should_be(deserialize<value_type>(expected_literal));
   }
 
@@ -89,20 +88,32 @@ struct EndPoint {
 
   explicit EndPoint(fn_type &&fn) : fn{fn}, solution{} {}
 
+  solution_type *operator->() { return &solution; }
+
+  solution_type &operator*() { return solution; }
+
   output_type operator()(std::remove_cvref_t<Input>... input) {
     return (solution.*fn)(input...);
   }
 
-  output_type operator()(disable_if_is_t<Input, std::string>... input) {
-    return operator()(deserialize<Input>(input)...);
-  }
+  template <typename Value> using literal_t = const char *;
 
-  Result<output_type> result_of(Input... input) {
+  Result<output_type> result_of(std::remove_cvref_t<Input>... input) {
     return Result<output_type>(operator()(input...));
   }
 
-  Result<output_type> result_of(disable_if_is_t<Input, std::string>... input) {
-    return Result<output_type>(operator()(deserialize<Input>(input)...));
+  Result<output_type> result_of(literal_t<Input>... input) {
+    return Result<output_type>(operator()(deserialize<std::remove_cvref_t<Input>>(input)...));
+  }
+
+  template<typename R, typename... Args>
+  Result<R> result_of(R (BindedSolution::* method)(Args...), Args... args) {
+    return Result<R>((solution.*method)(args...));
+  }
+
+  template<typename R, typename... Args>
+  Result<R> result_of(R (BindedSolution::* method)(Args...), literal_t<Args>... args) {
+    return Result<R>((solution.*method)(deserialize<std::remove_cvref_t<Input>>(args)...));
   }
 
   int ensure(std::vector<Thunk<output_type>> thunks) const {
