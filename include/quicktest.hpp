@@ -42,15 +42,32 @@ struct Thunk {
   bool compare(size_t ith, size_t total) const {
     const auto passed = fmt::fg(fmt::color::light_green);
     const auto failed = fmt::fg(fmt::color::orange_red);
+    bool equal = false, supported = true;
+    std::string expected_display, actual_display;
     if constexpr (not std::is_pointer_v<value_type>) {
-      if (expected != actual) {
-        fmt::print(failed, "[{} / {}] expected {}, got {}\n", ith, total,
-                   expected, actual);
-        return false;
-      } else {
+      equal = expected == actual;
+      expected_display = fmt::format("{}", expected);
+      actual_display = fmt::format("{}", actual);
+    } else if constexpr (std::is_same_v<leetcode::ListNode*, value_type>) {
+      expected_display = leetcode::listNodeToString(expected);
+      actual_display = leetcode::listNodeToString(actual);
+      equal = expected_display == actual_display;
+    } else if constexpr (std::is_same_v<leetcode::TreeNode*, value_type>) {
+      expected_display = leetcode::treeNodeToString(expected);
+      actual_display = leetcode::treeNodeToString(actual);
+      equal = expected_display == actual_display;
+    } else {
+      supported = false;
+    }
+    if (supported) {
+      if (equal) {
         fmt::print(passed, "[{} / {}] expected {}, got {}\n", ith, total,
-                   expected, actual);
+                   expected_display, actual_display);
         return true;
+      } else {
+        fmt::print(failed, "[{} / {}] expected {}, got {}\n", ith, total,
+                   expected_display, actual_display);
+        return false;
       }
     } else {
       const auto not_impl = fmt::fg(fmt::color::gray);
@@ -67,7 +84,12 @@ struct Result {
 
   explicit Result(value_type &&actual) : actual(actual) {}
 
-  Thunk<value_type> should_be(const char * expected_literal) {
+  template <typename Mapped>
+  Result<Mapped> map(std::function<Mapped(ValueType)> functor) {
+    return Result<Mapped>(functor(actual));
+  }
+
+  Thunk<value_type> should_be(const char *expected_literal) {
     return should_be(deserialize<value_type>(expected_literal));
   }
 
@@ -83,10 +105,13 @@ struct EndPoint {
   using input_type = std::tuple<Input...>;
   using fn_type = Output (BindedSolution::*)(Input...);
 
+  int id;
   BindedSolution solution;
   fn_type fn;
 
-  explicit EndPoint(fn_type &&fn) : fn{fn}, solution{} {}
+  EndPoint() = delete;
+
+  EndPoint(int id, fn_type &&fn) : id{id}, fn{fn}, solution{} {}
 
   solution_type *operator->() { return &solution; }
 
@@ -116,7 +141,8 @@ struct EndPoint {
     return Result<R>((solution.*method)(deserialize<std::remove_cvref_t<Input>>(args)...));
   }
 
-  int ensure(std::vector<Thunk<output_type>> thunks) const {
+  template <typename CompareType=output_type>
+  int ensure(std::vector<Thunk<CompareType>> thunks) const {
     size_t passed = 0;
     for (size_t i = 0; i < thunks.size(); ++i) {
       if (thunks[i].compare(i + 1, thunks.size())) {
