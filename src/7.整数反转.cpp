@@ -1,13 +1,17 @@
-/**
- * 7. Reverse Integer
+/*
+ * @lc app=leetcode.cn id=7 lang=cpp
+ *
+ * [7] 整数反转
  */
 
-#include <cstdlib>
 #include <cmath>
 #include <cstdint>
+#include <cstdlib>
+#include <numeric>
 
+// @lc code=start
 class Solution {
- public:
+public:
   int reverse(int x) {
     const auto sig = std::signbit(x);
     x = std::abs(x);
@@ -24,14 +28,16 @@ class Solution {
     return sig ? -r : r;
   }
 };
+// @lc code=end
 
-#include <gtest/gtest.h>
+#include "quicktest.hpp"
 
-TEST(ReverseInteger, Testcases) {
-  Solution solution;
-  ASSERT_EQ(solution.reverse(123), 321);
-  ASSERT_EQ(solution.reverse(-123), -321);
-  ASSERT_EQ(solution.reverse(1534236469), 0);
-  ASSERT_EQ(solution.reverse(std::numeric_limits<int>::max()), 0);
-  ASSERT_EQ(solution.reverse(std::numeric_limits<int>::min()), 0);
+#include <fmt/core.h>
+
+int main() {
+  auto endpoint = quicktest::EndPoint(&Solution::reverse);
+  return endpoint.ensure({
+    endpoint.result_of(123).should_be(321),
+    endpoint.result_of("-1234").should_be("-4321")
+  });
 }
