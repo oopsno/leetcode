@@ -35,8 +35,7 @@ private:
   }
 
 public:
-  std::vector<std::vector<int>>
-  threeSum(std::vector<int> &nums) {
+  std::vector<std::vector<int>> threeSum(std::vector<int> &nums) {
     std::sort(nums.begin(), nums.end());
     std::vector<std::vector<int>> results;
     for (int a = 0; a < nums.size();) {

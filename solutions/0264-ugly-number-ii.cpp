@@ -9,10 +9,10 @@
 
 // @lc code=start
 class Solution {
- public:
+public:
   int nthUglyNumber(int n) const noexcept {
     if (n < 1 or n > 1690) {
-      return -1;  // 此时行为未定义
+      return -1; // 此时行为未定义
     }
     int two = 0, three = 0, five = 0;
     std::vector<int> u(size_t(n) + 1);

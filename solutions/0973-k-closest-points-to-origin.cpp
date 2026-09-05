@@ -10,7 +10,7 @@
 
 // @lc code=start
 class Solution {
- private:
+private:
   struct Element {
     Element(int distance, size_t index) : distance(distance), index(index) {}
 
@@ -24,9 +24,9 @@ class Solution {
     }
   };
 
- public:
-  std::vector<std::vector<int>> kClosest(
-      const std::vector<std::vector<int>> &points, int K) noexcept {
+public:
+  std::vector<std::vector<int>>
+  kClosest(const std::vector<std::vector<int>> &points, int K) noexcept {
     auto queue =
         std::priority_queue<Element, std::vector<Element>, ElementCompare>();
     for (size_t i = 0; i < points.size(); ++i) {

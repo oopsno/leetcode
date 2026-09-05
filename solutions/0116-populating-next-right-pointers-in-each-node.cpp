@@ -8,17 +8,17 @@
  * Definition for a Node.
  */
 class Node {
- public:
+public:
   int val;
-  Node* left;
-  Node* right;
-  Node* next;
+  Node *left;
+  Node *right;
+  Node *next;
 
   Node() : val(0), left(nullptr), right(nullptr), next(nullptr) {}
 
   Node(int _val) : val(_val), left(nullptr), right(nullptr), next(nullptr) {}
 
-  Node(int _val, Node* _left, Node* _right, Node* _next)
+  Node(int _val, Node *_left, Node *_right, Node *_next)
       : val(_val), left(_left), right(_right), next(_next) {}
 };
 
@@ -27,13 +27,13 @@ class Node {
 
 // @lc code=start
 class Solution {
- public:
-  Node* connect(Node* root) const noexcept {
+public:
+  Node *connect(Node *root) const noexcept {
     if (root == nullptr) {
       return nullptr;
     }
-    Node* left = root;
-    std::deque<Node*> current{root}, next;
+    Node *left = root;
+    std::deque<Node *> current{root}, next;
     while (not current.empty()) {
       left = current.front();
       current.pop_front();

@@ -1,10 +1,10 @@
 #pragma once
 
+#include "leetcode/box.h"
 #include <fmt/base.h>
 #include <fmt/format.h>
 #include <initializer_list>
 #include <vector>
-#include "leetcode/box.h"
 
 struct ListNode {
   explicit ListNode(int x) noexcept : val(x), next(nullptr) {}
@@ -38,7 +38,7 @@ ListNode *makeListFrom(Range &&range) {
   return head;
 }
 
-template<typename Element>
+template <typename Element>
 inline ListNode *makeListFrom(std::initializer_list<Element> numbers) {
   auto dup = std::vector(numbers);
   return makeListFrom(dup);

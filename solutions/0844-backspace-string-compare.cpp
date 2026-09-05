@@ -10,7 +10,7 @@
 
 // @lc code=start
 class Solution {
- private:
+private:
   static char next(const std::string &s, int &offset) noexcept {
     for (int sharps = 0; offset >= 0; offset -= 1) {
       const char current = s[offset];
@@ -26,7 +26,7 @@ class Solution {
     return 0;
   }
 
- public:
+public:
   bool backspaceCompare(const std::string &s,
                         const std::string &t) const noexcept {
     int lhs = s.size() - 1, rhs = t.size() - 1;
@@ -35,8 +35,7 @@ class Solution {
         return false;
       }
     }
-    return (lhs < 0 or next(s, lhs) == 0) 
-       and (rhs < 0 or next(t, rhs) == 0);
+    return (lhs < 0 or next(s, lhs) == 0) and (rhs < 0 or next(t, rhs) == 0);
   }
 };
 // @lc code=end

@@ -30,9 +30,9 @@ public:
 
 #include <algorithm>
 #include <array>
+#include <stack>
 #include <unordered_map>
 #include <unordered_set>
-#include <stack>
 
 class Solution {
 private:

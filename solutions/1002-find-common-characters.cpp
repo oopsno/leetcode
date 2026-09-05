@@ -11,9 +11,9 @@
 #include <vector>
 // @lc code=start
 class Solution {
- public:
-  std::vector<std::string> commonChars(
-      const std::vector<std::string>& A) const noexcept {
+public:
+  std::vector<std::string>
+  commonChars(const std::vector<std::string> &A) const noexcept {
     std::vector<std::string> result;
     std::vector<std::array<int, 26>> m(A.size());
     for (int i = 0; i < A.size(); ++i) {

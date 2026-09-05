@@ -21,7 +21,7 @@ struct TreeNode {
 
 // @lc code=start
 class Solution {
- public:
+public:
   int getMinimumDifference(TreeNode *root) const noexcept {
     int last = -1;
     int minimal = std::numeric_limits<int>::max();

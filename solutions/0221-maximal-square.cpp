@@ -8,9 +8,9 @@
 #include <vector>
 // @lc code=start
 class Solution {
- public:
+public:
   int maximalSquare(
-      const std::vector<std::vector<char>>& matrix) const noexcept {
+      const std::vector<std::vector<char>> &matrix) const noexcept {
     if (matrix.empty() or matrix.front().empty()) {
       return 0;
     }
@@ -22,7 +22,7 @@ class Solution {
       for (size_t x = 0; x < width; ++x) {
         if (matrix[y][x] == '1') {
           if (y == 0 or x == 0) {
-              dp[y][x] = 1;
+            dp[y][x] = 1;
           } else {
             const int left = dp[y][x - 1];
             const int top = dp[y - 1][x];

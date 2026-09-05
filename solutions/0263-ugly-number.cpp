@@ -6,12 +6,12 @@
 
 // @lc code=start
 class Solution {
- public:
+public:
   bool isUgly(int num) {
     if (num <= 0) {
       return false;
     }
-    if (num <= 6) {  // 1, 2, 3, 4(2x2), 5, 6(2x3)
+    if (num <= 6) { // 1, 2, 3, 4(2x2), 5, 6(2x3)
       return true;
     }
     while (num % 2 == 0) {

@@ -9,9 +9,6 @@
 // @lc code=start
 class Solution {
 public:
-    bool hasCycle(ListNode *head) {
-        return false;
-    }
+  bool hasCycle(ListNode *head) { return false; }
 };
 // @lc code=end
-

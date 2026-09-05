@@ -9,7 +9,7 @@
 
 // @lc code=start
 class Solution {
- public:
+public:
   int videoStitching(std::vector<std::vector<int>> &clips,
                      int T) const noexcept {
     using clip_t = std::vector<int>;
@@ -18,7 +18,7 @@ class Solution {
                 return lhs.front() < rhs.front();
               });
     if (T > 0 and clips.front().front() != 0) {
-        return -1;
+      return -1;
     }
     std::vector<int> dp(T + 1, clips.size() + 1);
     dp[0] = 1;

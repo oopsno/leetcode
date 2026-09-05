@@ -11,9 +11,9 @@
 
 // @lc code=start
 class Solution {
- private:
+private:
   template <template <typename> typename Operator>
-  void eval(std::stack<int>& s) {
+  void eval(std::stack<int> &s) {
     const int rhs = s.top();
     s.pop();
     const int lhs = s.top();
@@ -21,10 +21,10 @@ class Solution {
     s.push(Operator<int>()(lhs, rhs));
   }
 
- public:
-  int evalRPN(const std::vector<std::string>& tokens) {
+public:
+  int evalRPN(const std::vector<std::string> &tokens) {
     std::stack<int> s;
-    for (const auto& token : tokens) {
+    for (const auto &token : tokens) {
       if (token == "+") {
         eval<std::plus>(s);
       } else if (token == "-") {

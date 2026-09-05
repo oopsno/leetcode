@@ -8,8 +8,8 @@
 
 // @lc code=start
 class Solution {
- public:
-  int rob(const std::vector<int>& nums) {
+public:
+  int rob(const std::vector<int> &nums) {
     // 处理边界数据
     if (nums.empty()) {
       return 0;

@@ -7,8 +7,8 @@
 #include <vector>
 // @lc code=start
 class Solution {
- public:
-  int maxProduct(const std::vector<int>& nums) const noexcept {
+public:
+  int maxProduct(const std::vector<int> &nums) const noexcept {
     if (nums.empty()) {
       return 0;
     }

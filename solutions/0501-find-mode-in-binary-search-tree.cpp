@@ -13,7 +13,7 @@
 #include <vector>
 
 class Solution {
- private:
+private:
   static inline void visit(std::vector<int> &results,
                            std::optional<int> &element, int &counter,
                            int &maximum_counter, int current) noexcept {
@@ -33,7 +33,7 @@ class Solution {
     }
   }
 
- public:
+public:
   std::vector<int> findMode(TreeNode *root) {
     std::vector<int> results;
     std::optional<int> element = std::nullopt;

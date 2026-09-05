@@ -13,11 +13,11 @@
 namespace {
 // @lc code=start
 struct Trie {
-  std::unordered_map<char, Trie*> tree;
+  std::unordered_map<char, Trie *> tree;
   size_t endpoint = 0;
 
-  void add(const std::string& word) noexcept {
-    Trie* current = this;
+  void add(const std::string &word) noexcept {
+    Trie *current = this;
     size_t offset = 0;
     while (offset < word.size()) {
       const char c = word[offset++];
@@ -30,9 +30,9 @@ struct Trie {
     current->endpoint = word.size();
   }
 
-  bool contains(const std::string& word, size_t begin,
+  bool contains(const std::string &word, size_t begin,
                 size_t end) const noexcept {
-    const Trie* current = this;
+    const Trie *current = this;
     while (begin < end) {
       const char c = word[begin];
       if (current->tree.count(c) == 1) {
@@ -47,17 +47,17 @@ struct Trie {
 };
 
 class Solution {
- public:
-  bool wordBreak(const std::string s, std::vector<std::string>& wordDict) {
+public:
+  bool wordBreak(const std::string s, std::vector<std::string> &wordDict) {
     if (s.empty() or wordDict.empty()) {
       // 该行为未定义
       return false;
     }
     // 构建字典树
-    Trie* trie = new Trie();
+    Trie *trie = new Trie();
     int longest = std::numeric_limits<int>::min();
     int shortest = std::numeric_limits<int>::max();
-    for (const auto& word : wordDict) {
+    for (const auto &word : wordDict) {
       if (word.empty() or word.size() > s.size()) {
         continue;
       }

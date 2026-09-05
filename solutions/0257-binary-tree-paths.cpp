@@ -21,21 +21,21 @@ struct TreeNode {
 class Solution {
 private:
   static std::string format(const std::vector<int> &trace) noexcept {
-      std::string result;
-      for (int i = 0; i < trace.size() - 1; ++i) {
-          result += std::to_string(trace[i]);
-          result += "->";
-      }
-      result += std::to_string(trace.back());
-      return result;
+    std::string result;
+    for (int i = 0; i < trace.size() - 1; ++i) {
+      result += std::to_string(trace[i]);
+      result += "->";
+    }
+    result += std::to_string(trace.back());
+    return result;
   }
   static std::vector<std::string>
   format(const std::vector<std::vector<int>> &routes) noexcept {
-      std::vector<std::string> results(routes.size());
-      for (int i = 0; i < routes.size(); ++i) {
-          results[i] = std::move(format(routes[i]));
-      }
-      return results;
+    std::vector<std::string> results(routes.size());
+    for (int i = 0; i < routes.size(); ++i) {
+      results[i] = std::move(format(routes[i]));
+    }
+    return results;
   }
 
   inline static bool is_leaf(TreeNode *root) noexcept {

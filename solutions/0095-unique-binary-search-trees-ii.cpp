@@ -79,7 +79,8 @@ public:
       return {new TreeNode(numbers.front())};
     }
     std::vector<TreeNode *> trees;
-    std::vector<std::tuple<std::vector<TreeNode *>, std::vector<TreeNode *>>> children;
+    std::vector<std::tuple<std::vector<TreeNode *>, std::vector<TreeNode *>>>
+        children;
     for (auto root : numbers) {
       auto [lhs, rhs] = split_at(numbers, root);
       auto lhs_nodes = generateTrees(lhs);

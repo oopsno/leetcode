@@ -11,11 +11,11 @@
 
 // @lc code=start
 class RandomizedCollection {
- private:
+private:
   std::vector<int> elements;
   std::unordered_map<int, std::unordered_set<size_t>> indices;
 
- public:
+public:
   /** Initialize your data structure here. */
   RandomizedCollection() = default;
 

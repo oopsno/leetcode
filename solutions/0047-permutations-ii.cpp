@@ -63,7 +63,7 @@ public:
 #include "leetcode/runner.h"
 #include <doctest/doctest.h>
 
-static std::vector<std::vector<int>> ground_truth(const std::vector<int>& xs) {
+static std::vector<std::vector<int>> ground_truth(const std::vector<int> &xs) {
   std::vector dup{xs};
   std::sort(dup.begin(), dup.end());
   std::vector<std::vector<int>> results{dup};

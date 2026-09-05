@@ -67,7 +67,8 @@ public:
       }
       std::vector<int> len_row{full_periods + int(rem > 0)};
       for (int j = 1; j < numRows - 1; ++j) {
-        len_row.push_back((2 * full_periods) + int(rem > j) + int(rem > period - j));
+        len_row.push_back((2 * full_periods) + int(rem > j) +
+                          int(rem > period - j));
       }
       if (numRows > 1) {
         len_row.push_back(full_periods + int(rem > (numRows - 1)));

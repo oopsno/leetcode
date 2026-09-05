@@ -7,9 +7,9 @@
 #include <vector>
 // @lc code=start
 class Solution {
- private:
-  static int rob(const std::vector<int>& nums, std::vector<int>& dp,
-          const size_t begin, const size_t end) noexcept {
+private:
+  static int rob(const std::vector<int> &nums, std::vector<int> &dp,
+                 const size_t begin, const size_t end) noexcept {
     dp[0] = nums[begin];
     dp[1] = std::max(nums[begin], nums[begin + 1]);
     for (int i = 2; i < end - begin; ++i) {
@@ -18,8 +18,8 @@ class Solution {
     return dp.back();
   }
 
- public:
-  int rob(const std::vector<int>& nums) const {
+public:
+  int rob(const std::vector<int> &nums) const {
     // 处理边界数据
     if (nums.empty()) {
       return 1;

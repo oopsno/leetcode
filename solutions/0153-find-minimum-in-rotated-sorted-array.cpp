@@ -5,28 +5,29 @@
  */
 
 // @lc code=start
-#include <vector>
 #include <numeric>
+#include <vector>
 class Solution {
-  int findMin(const std::vector<int> &nums, size_t left, size_t right) noexcept {
+  int findMin(const std::vector<int> &nums, size_t left,
+              size_t right) noexcept {
     if (right - left == 1) {
-        return nums[left];
+      return nums[left];
     }
     if (right - left == 2) {
-        return std::min(nums[left], nums[left + 1]);
+      return std::min(nums[left], nums[left + 1]);
     }
     size_t middle = (left + right) / 2;
     if (nums[left] < nums[middle]) { // 左半部分有序
-        return findMin(nums, middle, right);
+      return findMin(nums, middle, right);
     } else {
-        return findMin(nums, left, middle + 1);
+      return findMin(nums, left, middle + 1);
     }
   }
 
 public:
   int findMin(const std::vector<int> &nums) noexcept {
     if (nums.front() <= nums.back()) {
-        return nums.front();
+      return nums.front();
     }
     return findMin(nums, 0, nums.size());
   }
@@ -36,8 +37,8 @@ public:
 #include <doctest/doctest.h>
 
 TEST_CASE("0153") {
-    Solution s;
-    std::vector<int> nums{3, 4, 5, 1, 2};
-    auto result = s.findMin(nums);
-    REQUIRE_EQ(result, 1);
+  Solution s;
+  std::vector<int> nums{3, 4, 5, 1, 2};
+  auto result = s.findMin(nums);
+  REQUIRE_EQ(result, 1);
 }

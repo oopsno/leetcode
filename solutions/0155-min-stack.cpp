@@ -10,10 +10,10 @@
 
 // @lc code=start
 class MinStack {
- private:
+private:
   std::stack<std::tuple<int, int>> s;
 
- public:
+public:
   /** initialize your data structure here. */
   MinStack() {}
 

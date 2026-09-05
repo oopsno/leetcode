@@ -40,14 +40,14 @@ struct Manacher {
     int maximum_pos = 0, maximum_length = p[0];
     int prefix_length = 0;
     for (int i = 1; i <= p.size() / 2; ++i) {
-        const auto [left, right] = expand(maximum_pos, i);
-        if (right > maximum_pos + maximum_length) {
-            maximum_pos = i;
-            maximum_length = p[i];
-        }
-        if (left == 0) {
-            prefix_length = std::max(prefix_length, right - left + 1);
-        }
+      const auto [left, right] = expand(maximum_pos, i);
+      if (right > maximum_pos + maximum_length) {
+        maximum_pos = i;
+        maximum_length = p[i];
+      }
+      if (left == 0) {
+        prefix_length = std::max(prefix_length, right - left + 1);
+      }
     }
     return prefix_length / 2;
   }
@@ -56,16 +56,16 @@ struct Manacher {
 class Solution {
 public:
   std::string shortestPalindrome(const std::string s) const noexcept {
-      // 计算从 s[0] 开始的最长回文串的长度
-      int prefix_length = Manacher(s).eval();
-      // 如果 s 本身就是回文的，直接返回
-      if (prefix_length == s.size()) {
-          return s;
-      }
-      // 反转后缀以构造前缀
-      auto prefix =  s.substr(prefix_length, s.size() - prefix_length);
-      std::reverse(prefix.begin(), prefix.end());
-      return prefix + s;
+    // 计算从 s[0] 开始的最长回文串的长度
+    int prefix_length = Manacher(s).eval();
+    // 如果 s 本身就是回文的，直接返回
+    if (prefix_length == s.size()) {
+      return s;
+    }
+    // 反转后缀以构造前缀
+    auto prefix = s.substr(prefix_length, s.size() - prefix_length);
+    std::reverse(prefix.begin(), prefix.end());
+    return prefix + s;
   }
 };
 // @lc code=end

@@ -12,12 +12,12 @@
 
 // @lc code=start
 class Solution {
- private:
+private:
   /**
    * 计算连续子数组 {xs[begin], ...,  xs[end]} 是否构成山脉
    */
-  static inline int next_mountain(const std::vector<int>& xs, int& begin,
-                                  int& peak, int& end) noexcept {
+  static inline int next_mountain(const std::vector<int> &xs, int &begin,
+                                  int &peak, int &end) noexcept {
     while (end < xs.size() and xs[begin] >= xs[peak]) {
       begin += 1;
       peak += 1;
@@ -43,14 +43,14 @@ class Solution {
     return end - begin + 1;
   }
 
-  static inline void skip(int& begin, int& peak, int& end) noexcept {
+  static inline void skip(int &begin, int &peak, int &end) noexcept {
     begin = end;
     peak = begin + 1;
     end = peak + 1;
   }
 
- public:
-  int longestMountain(const std::vector<int>& A) const noexcept {
+public:
+  int longestMountain(const std::vector<int> &A) const noexcept {
     // 山脉长度至少为 3
     if (A.size() < 3) {
       return 0;

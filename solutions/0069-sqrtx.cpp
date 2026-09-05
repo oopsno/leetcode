@@ -7,7 +7,7 @@
 #include <cmath>
 // @lc code=start
 class Solution {
- public:
+public:
   int mySqrt(int n) {
     // f(x)  = x^2 - n
     // f'(x) = 2x
@@ -16,7 +16,7 @@ class Solution {
     while (true) {
       xi = (x + n / x) / 2;
       if (std::abs(xi - x) < 0.1) {
-          break;
+        break;
       }
       x = xi;
     }

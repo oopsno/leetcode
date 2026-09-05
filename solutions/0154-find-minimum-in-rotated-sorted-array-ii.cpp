@@ -2,14 +2,16 @@
  * @lc app=leetcode.cn id=154 lang=cpp
  *
  * [154] 寻找旋转排序数组中的最小值 II
- * See also: https://leetcode-cn.com/problems/xuan-zhuan-shu-zu-de-zui-xiao-shu-zi-lcof/
+ * See also:
+ * https://leetcode-cn.com/problems/xuan-zhuan-shu-zu-de-zui-xiao-shu-zi-lcof/
  */
 
 #include <vector>
 namespace {
 // @lc code=start
 class Solution {
-  int findMinImpl(const std::vector<int> &nums, size_t left, size_t right) noexcept {
+  int findMinImpl(const std::vector<int> &nums, size_t left,
+                  size_t right) noexcept {
     if (right - left == 1) {
       return nums[left];
     }
@@ -39,15 +41,13 @@ public:
     }
   }
 
-  int minArray(const std::vector<int> &nums) noexcept {
-    return findMin(nums);
-  }
+  int minArray(const std::vector<int> &nums) noexcept { return findMin(nums); }
 };
 // @lc code=end
-}
+} // namespace
 
-#include <doctest/doctest.h>
 #include "leetcode/runner.h"
+#include <doctest/doctest.h>
 
 TEST_CASE("0154") {
   auto f = Runner(154, &Solution::findMin);

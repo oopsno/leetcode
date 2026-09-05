@@ -4,7 +4,6 @@
  * [37] 解数独
  */
 
- 
 // @lc code=start
 #include <algorithm>
 #include <array>

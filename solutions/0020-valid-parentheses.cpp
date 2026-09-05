@@ -29,12 +29,27 @@ public:
     std::stack<int> stack;
     for (char c : s) {
       switch (c) {
-        case '(': push(stack, LP); break;
-        case '[': push(stack, LS); break;
-        case '{': push(stack, LB); break;
-        case ')': if (not pop(stack, LP)) return false; break;
-        case ']': if (not pop(stack, LS)) return false; break;
-        case '}': if (not pop(stack, LB)) return false; break;
+      case '(':
+        push(stack, LP);
+        break;
+      case '[':
+        push(stack, LS);
+        break;
+      case '{':
+        push(stack, LB);
+        break;
+      case ')':
+        if (not pop(stack, LP))
+          return false;
+        break;
+      case ']':
+        if (not pop(stack, LS))
+          return false;
+        break;
+      case '}':
+        if (not pop(stack, LB))
+          return false;
+        break;
       }
     }
     return stack.empty();

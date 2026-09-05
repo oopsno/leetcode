@@ -11,13 +11,13 @@ struct Runner {
 
   Runner(int id, FuncType fn) : id{id}, solution{}, fn{fn} {}
 
-  template<int I>
+  template <int I>
   using ArgumentTypeAt = std::tuple_element_t<I, ArgumentTypes>;
 
   auto operator()(InputType... input) {
     return (solution.*fn)(std::forward<InputType>(input)...);
   }
-  
+
   // Storage
   int id;
   SolutionType solution;

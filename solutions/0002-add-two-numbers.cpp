@@ -46,7 +46,7 @@ public:
       rhs = rhs->next;
     }
     if (carry != 0) {
-        sum = push_back(&head, sum, carry);
+      sum = push_back(&head, sum, carry);
     }
     return head;
   }
@@ -56,7 +56,7 @@ public:
 #include <doctest/doctest.h>
 
 static bool run(std::initializer_list<int> lhs, std::initializer_list<int> rhs,
-                 std::initializer_list<int> expected) {
+                std::initializer_list<int> expected) {
   Solution solution;
   auto lhs_list = makeListFrom(lhs);
   auto rhs_list = makeListFrom(rhs);

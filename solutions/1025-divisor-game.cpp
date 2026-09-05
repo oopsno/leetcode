@@ -52,8 +52,8 @@ public:
 };
 // @lc code=end
 
-#include <doctest/doctest.h>
 #include "leetcode/runner.h"
+#include <doctest/doctest.h>
 
 TEST_CASE("1025") {
   auto f = Runner(1025, &Solution::divisorGame);

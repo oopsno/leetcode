@@ -74,19 +74,19 @@ public:
 // @lc code=end
 } // namespace
 
+#include "leetcode/runner.h"
 #include <doctest/doctest.h>
 #include <nlohmann/json.hpp>
-#include "leetcode/runner.h"
 
 TEST_CASE("0079") {
   auto f = Runner(79, &Solution::exist);
   using Board = decltype(f)::ArgumentTypeAt<0>;
-  auto parse = [](const std::string& text){
+  auto parse = [](const std::string &text) {
     std::vector<std::vector<std::string>> obj = nlohmann::json::parse(text);
     std::vector<std::vector<char>> ret(obj.size());
     auto it = ret.begin();
-    for (auto& row : obj) {
-      for (auto& col : row) {
+    for (auto &row : obj) {
+      for (auto &col : row) {
         it->push_back(col.front());
       }
       ++it;
@@ -94,7 +94,8 @@ TEST_CASE("0079") {
     return ret;
   };
   SUBCASE("example 1") {
-    auto board = Board{{'A', 'B', 'C', 'E'}, {'S', 'F', 'E', 'S'}, {'A', 'D', 'E', 'E'}};
+    auto board =
+        Board{{'A', 'B', 'C', 'E'}, {'S', 'F', 'E', 'S'}, {'A', 'D', 'E', 'E'}};
     const std::string word = "ABCESEEEFS";
     REQUIRE(f(board, word));
   }

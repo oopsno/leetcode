@@ -9,8 +9,8 @@
 
 // @lc code=start
 class Solution {
- public:
-  int lengthOfLIS(const std::vector<int>& nums) const noexcept {
+public:
+  int lengthOfLIS(const std::vector<int> &nums) const noexcept {
     if (nums.size() < 2) {
       return nums.size();
     }
@@ -27,7 +27,7 @@ class Solution {
     return result;
   }
 
-  int fastLengthOfLIS(const std::vector<int>& nums) const noexcept {
+  int fastLengthOfLIS(const std::vector<int> &nums) const noexcept {
     constexpr int min = std::numeric_limits<int>::min();
     constexpr int max = std::numeric_limits<int>::max();
     if (nums.size() < 2) {

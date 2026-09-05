@@ -11,8 +11,7 @@
 
 enum State { UNKNONW = 0, YES = 1, NO = -1 };
 
-template <typename Element>
-struct matrix2d {
+template <typename Element> struct matrix2d {
   matrix2d(size_t width, size_t height, Element default_value) {
     auto row = std::vector<Element>(width, default_value);
     storage = std::vector<std::vector<Element>>(height, row);
@@ -24,7 +23,7 @@ struct matrix2d {
   const Element &at(size_t y, size_t x) const { return storage[y][x]; }
 
   void debug() const noexcept {
-    for (const auto& row : storage) {
+    for (const auto &row : storage) {
       for (const auto element : row) {
         std::cout << element << " ";
       }
@@ -39,10 +38,10 @@ class Solution {
     int z = -1;
     mat.at(0, 0) = YES; // 初始状态为 YES
     // mat(Y, X) -> s1[:X], s2[:Y] <-> s3[:X + Y]
-    for (int c = 0; c < s1.size(); ++ c) {
+    for (int c = 0; c < s1.size(); ++c) {
       mat.at(0, c + 1) = (mat.at(0, c) == YES and s1[c] == s3[c]) ? YES : NO;
     }
-    for (int c = 0; c < s2.size(); ++ c) {
+    for (int c = 0; c < s2.size(); ++c) {
       mat.at(c + 1, 0) = (mat.at(c, 0) == YES and s2[c] == s3[c]) ? YES : NO;
     }
     for (int y = 1; y <= s2.size(); ++y) {
@@ -75,8 +74,8 @@ public:
 };
 // @lc code=end
 
-#include <doctest/doctest.h>
 #include "leetcode/runner.h"
+#include <doctest/doctest.h>
 
 TEST_CASE("0097") {
   auto f = Runner(97, &Solution::isInterleave);

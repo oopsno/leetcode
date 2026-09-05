@@ -5,9 +5,9 @@
  */
 
 #include <algorithm>
+#include <numeric>
 #include <string>
 #include <vector>
-#include <numeric>
 
 // @lc code=start
 
@@ -51,12 +51,12 @@ struct Manacher {
   }
 };
 class Solution {
- public:
+public:
   int countSubstrings(const std::string s) const noexcept {
-      const auto p = Manacher(s).eval();
-      return std::accumulate(p.cbegin(), p.cend(), 0, [](int sum, int current) {
-          return sum + (current + 1) / 2;
-      });
+    const auto p = Manacher(s).eval();
+    return std::accumulate(p.cbegin(), p.cend(), 0, [](int sum, int current) {
+      return sum + (current + 1) / 2;
+    });
   }
 };
 // @lc code=end

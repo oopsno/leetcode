@@ -8,11 +8,11 @@
 #include <vector>
 // @lc code=start
 class Solution {
- private:
+private:
   static constexpr inline int square(const int x) noexcept { return x * x; };
 
- public:
-  std::vector<int> sortedSquares(const std::vector<int>& A) const noexcept {
+public:
+  std::vector<int> sortedSquares(const std::vector<int> &A) const noexcept {
     std::vector<int> result;
     result.reserve(A.size());
     auto it = std::back_inserter(result);

@@ -11,16 +11,16 @@ class Solution {
 public:
   int rangeBitwiseAnd(int m, int n) {
     if (((~m) & n) > m) {
-        return 0;
+      return 0;
     } else {
-        return m & n;
+      return m & n;
     }
   }
 };
 // @lc code=end
 
-#include <doctest/doctest.h>
 #include "leetcode/runner.h"
+#include <doctest/doctest.h>
 
 TEST_CASE("0201") {
   auto f = Runner(201, &Solution::rangeBitwiseAnd);

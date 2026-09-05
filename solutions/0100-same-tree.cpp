@@ -8,7 +8,7 @@
 
 // @lc code=start
 class Solution {
- public:
+public:
   bool isSameTree(TreeNode *p, TreeNode *q) {
     if (p == q) {
       return true;
@@ -16,7 +16,8 @@ class Solution {
     if (p == nullptr or q == nullptr) {
       return false;
     }
-    return p->val == q->val and isSameTree(p->left, q->left) and isSameTree(p->right, q->right);
+    return p->val == q->val and isSameTree(p->left, q->left) and
+           isSameTree(p->right, q->right);
   }
 };
 // @lc code=end
@@ -24,8 +25,8 @@ class Solution {
 #include <doctest/doctest.h>
 
 TEST_CASE("0100") {
-  auto* x = stringToTreeNode("[1,2,3]");
-  auto* y = stringToTreeNode("[1,2,3]");
+  auto *x = stringToTreeNode("[1,2,3]");
+  auto *y = stringToTreeNode("[1,2,3]");
   REQUIRE(Solution().isSameTree(x, y));
   REQUIRE(Solution().isSameTree(x, x));
   REQUIRE(Solution().isSameTree(nullptr, nullptr));

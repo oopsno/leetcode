@@ -32,7 +32,7 @@ public:
       size_t cursor = 0;
       for (size_t i = 0; i < nums.size(); ++i) {
         if ((selectors[i] & pattern) != 0) {
-            it->operator[](cursor++) = nums[i];
+          it->operator[](cursor++) = nums[i];
         }
       }
     }

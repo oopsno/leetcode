@@ -30,10 +30,10 @@ public:
   }
 };
 // @lc code=end
-}
+} // namespace
 
-#include <doctest/doctest.h>
 #include "leetcode/runner.h"
+#include <doctest/doctest.h>
 
 TEST_CASE("0167") {
   auto f = Runner(167, &Solution::twoSum);

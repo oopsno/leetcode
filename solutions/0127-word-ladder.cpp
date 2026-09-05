@@ -4,17 +4,17 @@
  * [127] 单词接龙
  */
 #include <algorithm>
+#include <iostream>
 #include <queue>
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
-#include <iostream>
 
 // @lc code=start
 class Solution {
- private:
-  size_t editDistance(const std::string& lhs, const std::string& rhs) noexcept {
+private:
+  size_t editDistance(const std::string &lhs, const std::string &rhs) noexcept {
     if (lhs.size() != rhs.size()) {
       return std::min(lhs.size(), rhs.size());
     }
@@ -26,9 +26,9 @@ class Solution {
     return distance;
   }
 
- public:
+public:
   int ladderLength(std::string beginWord, std::string endWord,
-                   std::vector<std::string>& wordList) noexcept {
+                   std::vector<std::string> &wordList) noexcept {
     // 确保 beginWord, endWord 均在 wordList 中
     size_t head = wordList.size(), tail = wordList.size();
     for (size_t i = 0; i < wordList.size(); ++i) {
@@ -101,7 +101,6 @@ class Solution {
   }
 };
 // @lc code=end
-
 
 #include <doctest/doctest.h>
 

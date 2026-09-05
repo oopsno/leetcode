@@ -7,7 +7,7 @@
 #include <tuple>
 // @lc code=start
 class Solution {
- private:
+private:
   static std::tuple<char, int> next(const std::string &s, int &offset) {
     const char c = s[offset];
     int count = 0;
@@ -17,7 +17,7 @@ class Solution {
     return {c, count};
   }
 
- public:
+public:
   bool isLongPressedName(const std::string &name, const std::string &typed) {
     int lhs = 0, rhs = 0;
     while (lhs < name.size() and rhs < typed.size()) {
