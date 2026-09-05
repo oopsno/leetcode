@@ -388,3 +388,5 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.toptal.com/developers/gitignore/api/c++,visualstudiocode,windows,linux,macos,cmake,python,node,react
+
+leetcode-local-cli/

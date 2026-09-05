@@ -1,34 +1,45 @@
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 4.4)
 project(LeetCode CXX)
 
-# Using {fmt}
-find_package(fmt 7 REQUIRED)
+find_package(doctest       2  REQUIRED)
+find_package(fmt           12 REQUIRED)
+find_package(nlohmann_json 3  REQUIRED)
 
-# Using C++20
-set(CMAKE_CXX_STANDARD_REQUIRED 20)
-set(CMAKE_CXX_STANDARD 20)
+add_library(compile-options INTERFACE)
 
-# Including custom headers
-include_directories(include)
+target_compile_features(compile-options INTERFACE cxx_std_23)
+
+target_include_directories(
+  compile-options INTERFACE
+    $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
+)
+
+target_link_libraries(
+  compile-options INTERFACE
+    doctest::doctest
+    fmt::fmt
+    nlohmann_json::nlohmann_json
+)
 
 # LeetCode Supports
-add_library(leetcode src/leetcode.cpp include/leetcode.hpp)
+add_library(leetcode OBJECT src/leetcode/tree-node.cpp)
+
+target_link_libraries(leetcode PUBLIC compile-options)
+
+# Doctest main
+add_library(doctest-main OBJECT test/doctest-main.cpp)
+
+target_link_libraries(doctest-main PUBLIC compile-options doctest::doctest)
+
+add_subdirectory(solutions)
+
+add_executable(leetcode-solutions
+  $<TARGET_OBJECTS:solution-objs>
+  $<TARGET_OBJECTS:doctest-main>
+  $<TARGET_OBJECTS:leetcode>
+)
 
 # Enable testing
 enable_testing()
 
-# Add all solutions
-macro(add_solution NAME SOURCE)
-  list(APPEND SOLUTIONS ${SOURCE})
-  add_executable(${NAME} ${SOURCE})
-  target_link_libraries(${NAME} leetcode fmt)
-  # add_test(${NAME} ${NAME})
-endmacro(add_solution)
-
-include(cmake/solutions.cmake)
-
-add_executable(all-unittests "${SOLUTIONS}")
-target_link_libraries(all-unittests gtest-main leetcode)
-
-add_executable(leetcode-unittest test/gtest-main.cpp test/leetcode.cpp)
-target_link_libraries(leetcode-unittest leetcode)
+add_test(NAME leetcode-solutions COMMAND leetcode-solutions)
