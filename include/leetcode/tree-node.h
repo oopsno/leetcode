@@ -1,6 +1,8 @@
 #pragma once
 
-#include <string>
+#include <optional>
+#include <string_view>
+#include <vector>
 
 struct TreeNode {
   int val;
@@ -12,6 +14,10 @@ struct TreeNode {
       : val(x), left(left), right(right) {}
 };
 
-TreeNode *stringToTreeNode(std::string text);
+TreeNode *vectorToTreeNode(const std::vector<std::optional<int>> &vec);
+
+std::vector<std::optional<int>> treeNodeToVector(TreeNode *node);
+
+TreeNode *stringToTreeNode(std::string_view text);
 
 std::string treeNodeToString(TreeNode *node);

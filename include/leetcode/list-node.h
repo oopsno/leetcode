@@ -1,9 +1,5 @@
 #pragma once
 
-#include "leetcode/box.h"
-#include <fmt/base.h>
-#include <fmt/format.h>
-#include <initializer_list>
 #include <vector>
 
 struct ListNode {

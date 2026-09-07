@@ -1,90 +1,77 @@
-#include <algorithm>
 #include <cassert>
-#include <iostream>
 #include <queue>
-#include <sstream>
 #include <string>
+
+#include <nlohmann/json.hpp>
 
 #include "leetcode/tree-node.h"
 
-std::string treeNodeToString(TreeNode *root) {
-  if (root == nullptr) {
-    return "[]";
+TreeNode *vectorToTreeNode(const std::vector<std::optional<int>> &vec) {
+  if (vec.empty() || !vec[0].has_value()) {
+    return nullptr;
   }
 
-  std::string output = "";
+  TreeNode *root = new TreeNode(vec[0].value());
+  std::queue<TreeNode *> nodeQueue;
+  nodeQueue.push(root);
+
+  size_t i = 1;
+  while (!nodeQueue.empty() && i < vec.size()) {
+    TreeNode *node = nodeQueue.front();
+    nodeQueue.pop();
+
+    if (i < vec.size() && vec[i].has_value()) {
+      node->left = new TreeNode(vec[i].value());
+      nodeQueue.push(node->left);
+    }
+    i++;
+
+    if (i < vec.size() && vec[i].has_value()) {
+      node->right = new TreeNode(vec[i].value());
+      nodeQueue.push(node->right);
+    }
+    i++;
+  }
+  return root;
+}
+
+std::vector<std::optional<int>> treeNodeToVector(TreeNode *root) {
+  if (root == nullptr) {
+    return {};
+  }
+
+  std::vector<std::optional<int>> result;
   std::queue<TreeNode *> q;
   q.push(root);
+
   while (!q.empty()) {
     TreeNode *node = q.front();
     q.pop();
 
     if (node == nullptr) {
-      output += "null, ";
+      result.push_back(std::nullopt);
       continue;
     }
 
-    output += std::to_string(node->val) + ", ";
+    result.push_back(node->val);
     q.push(node->left);
     q.push(node->right);
   }
-  return "[" + output.substr(0, output.length() - 2) + "]";
-}
 
-void trimLeftTrailingSpaces(std::string &input) {
-  input.erase(input.begin(), find_if(input.begin(), input.end(),
-                                     [](int ch) { return !isspace(ch); }));
-}
-
-void trimRightTrailingSpaces(std::string &input) {
-  input.erase(
-      find_if(input.rbegin(), input.rend(), [](int ch) { return !isspace(ch); })
-          .base(),
-      input.end());
-}
-
-TreeNode *stringToTreeNode(std::string input) {
-  trimLeftTrailingSpaces(input);
-  trimRightTrailingSpaces(input);
-  input = input.substr(1, input.length() - 2);
-  if (!input.size()) {
-    return nullptr;
+  while (!result.empty() && !result.back().has_value()) {
+    result.pop_back();
   }
 
-  std::string item;
-  std::stringstream ss;
-  ss.str(input);
+  return result;
+}
 
-  getline(ss, item, ',');
-  TreeNode *root = new TreeNode(stoi(item));
-  std::queue<TreeNode *> nodeQueue;
-  nodeQueue.push(root);
+std::string treeNodeToString(TreeNode *root) {
+  nlohmann::json doc;
+  doc = treeNodeToVector(root);
+  return doc.dump();
+}
 
-  while (true) {
-    TreeNode *node = nodeQueue.front();
-    nodeQueue.pop();
-
-    if (!getline(ss, item, ',')) {
-      break;
-    }
-
-    trimLeftTrailingSpaces(item);
-    if (item != "null") {
-      int leftNumber = stoi(item);
-      node->left = new TreeNode(leftNumber);
-      nodeQueue.push(node->left);
-    }
-
-    if (!getline(ss, item, ',')) {
-      break;
-    }
-
-    trimLeftTrailingSpaces(item);
-    if (item != "null") {
-      int rightNumber = stoi(item);
-      node->right = new TreeNode(rightNumber);
-      nodeQueue.push(node->right);
-    }
-  }
-  return root;
+TreeNode *stringToTreeNode(std::string_view input) {
+  std::vector<std::optional<int>> data = nlohmann::json::parse(input);
+  return vectorToTreeNode(data);
 }

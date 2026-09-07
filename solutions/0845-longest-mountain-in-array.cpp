@@ -5,10 +5,7 @@
  */
 
 #include <algorithm>
-#include <tuple>
 #include <vector>
-
-#include "leetcode.hpp"
 
 // @lc code=start
 class Solution {
