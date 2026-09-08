@@ -55,6 +55,7 @@ add_library(solution-objs OBJECT
   0120-triangle.cpp
   0121-best-time-to-buy-and-sell-stock.cpp
   0122-best-time-to-buy-and-sell-stock-ii.cpp
+  0123-best-time-to-buy-and-sell-stock-iii.cpp
   0125-valid-palindrome.cpp
   0127-word-ladder.cpp
   0133-clone-graph.cpp
@@ -70,6 +71,7 @@ add_library(solution-objs OBJECT
   0154-find-minimum-in-rotated-sorted-array-ii.cpp
   0155-min-stack.cpp
   0167-two-sum-ii-input-array-is-sorted.cpp
+  0188-best-time-to-buy-and-sell-stock-iv.cpp
   0191-number-of-1-bits.cpp
   0198-house-robber.cpp
   0201-bitwise-and-of-numbers-range.cpp
@@ -84,6 +86,7 @@ add_library(solution-objs OBJECT
   0263-ugly-number.cpp
   0264-ugly-number-ii.cpp
   0300-longest-increasing-subsequence.cpp
+  0309-best-time-to-buy-and-sell-stock-with-cooldown.cpp
   0312-burst-balloons.cpp
   0332-reconstruct-itinerary.cpp
   0381-insert-delete-getrandom-o1-duplicates-allowed.cpp
@@ -96,6 +99,7 @@ add_library(solution-objs OBJECT
   0637-average-of-levels-in-binary-tree.cpp
   0647-palindromic-substrings.cpp
   0685-redundant-connection-ii.cpp
+  0714-best-time-to-buy-and-sell-stock-with-transaction-fee.cpp
   0739-daily-temperatures.cpp
   0763-partition-labels.cpp
   0783-minimum-distance-between-bst-nodes.cpp
