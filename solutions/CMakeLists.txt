@@ -89,6 +89,7 @@ add_library(solution-objs OBJECT
   0309-best-time-to-buy-and-sell-stock-with-cooldown.cpp
   0312-burst-balloons.cpp
   0332-reconstruct-itinerary.cpp
+  0337-house-robber-iii.cpp
   0381-insert-delete-getrandom-o1-duplicates-allowed.cpp
   0416-partition-equal-subset-sum.cpp
   0461-hamming-distance.cpp

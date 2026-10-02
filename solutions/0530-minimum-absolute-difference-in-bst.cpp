@@ -5,44 +5,43 @@
  */
 
 #include <algorithm>
-#include <cmath>
 #include <limits>
 #include <stack>
 
-/**
- * Definition for a binary tree node.
- */
-struct TreeNode {
-  int val;
-  TreeNode *left;
-  TreeNode *right;
-  TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
-};
+#include "leetcode/tree-node.h"
 
 // @lc code=start
+struct Status {
+  int mimimum_abs_diff = std::numeric_limits<int>::max();
+  TreeNode* prev = nullptr;
+};
+
 class Solution {
 public:
-  int getMinimumDifference(TreeNode *root) const noexcept {
-    int last = -1;
-    int minimal = std::numeric_limits<int>::max();
-    std::stack<const TreeNode *> s;
-    const TreeNode *cursor = root;
-    while (cursor != nullptr or not s.empty()) {
-      while (cursor != nullptr) {
-        s.push(cursor);
-        cursor = cursor->left;
-      }
-      if (not s.empty()) {
-        cursor = s.top();
-        s.pop();
-        if (last >= 0) {
-          minimal = std::min(minimal, cursor->val - last);
-        }
-        last = cursor->val;
-        cursor = cursor->right;
-      }
+  void visit(TreeNode *root, Status &status) {
+    if (root == nullptr) {
+      return;
     }
-    return minimal;
+    visit(root->left, status);
+    if (status.prev != nullptr) {
+      status.mimimum_abs_diff = std::min(status.mimimum_abs_diff, root->val - status.prev->val);
+    }
+    status.prev = root;
+    visit(root->right, status);
+  }
+  int getMinimumDifference(TreeNode *root) {
+    Status status;
+    visit(root, status);
+    return status.mimimum_abs_diff;
   }
 };
 // @lc code=end
+
+#include <doctest/doctest.h>
+
+TEST_CASE("0530") {
+  auto tree1 = stringToTreeNode("[4,2,6,1,3]");
+  REQUIRE_EQ(Solution().getMinimumDifference(tree1), 1);
+  auto tree2 = stringToTreeNode("[1,0,48,null,null,12,49]");
+  REQUIRE_EQ(Solution().getMinimumDifference(tree2), 1);
+}

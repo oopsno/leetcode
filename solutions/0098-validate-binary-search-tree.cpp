@@ -5,33 +5,46 @@
  */
 
 #include "leetcode/tree-node.h"
-
-// @lc code=start
-#include <algorithm>
+#include <cstdint>
 #include <limits>
-#include <tuple>
+#include <utility>
+
+namespace {
+// @lc code=start
+struct Context {
+  // 上下界, 左开右开, 要小心传入节点本身就是 int 最大/小值
+  int64_t upper_bound = std::numeric_limits<int64_t>::max();
+  int64_t lower_bound = std::numeric_limits<int64_t>::min();
+  // 合法性
+  bool valid = true;
+};
 
 class Solution {
 public:
-  auto visit(TreeNode *root) -> std::tuple<int64_t, int64_t, bool> {
-    int64_t lmin, lmax, rmin, rmax;
-    bool lbst, rbst;
+  void visit(TreeNode *root, Context &ctx) {
     if (root == nullptr) {
-      using limit = std::numeric_limits<int64_t>;
-      return std::make_tuple(limit::max(), limit::min(), true);
+      return;
     }
-    std::tie(lmin, lmax, lbst) = visit(root->left);
-    std::tie(rmin, rmax, rbst) = visit(root->right);
-    const auto mx =
-        std::max(static_cast<int64_t>(root->val), std::max(lmax, rmax));
-    const auto mn =
-        std::min(static_cast<int64_t>(root->val), std::min(lmin, rmin));
-    const auto legal = lmax < root->val and root->val < rmin;
-    return std::make_tuple(mn, mx, legal and lbst and rbst);
+    auto upper = std::exchange(ctx.upper_bound, root->val);
+    visit(root->left, ctx);
+    ctx.upper_bound = upper;
+    ctx.valid &= (ctx.lower_bound < root->val) && (root->val < ctx.upper_bound);
+    // 失败立刻停止遍历
+    if (!ctx.valid) {
+      return;
+    }
+    auto lower = std::exchange(ctx.lower_bound, root->val);
+    visit(root->right, ctx);
+    ctx.lower_bound = lower;
   }
-  bool isValidBST(TreeNode *root) { return std::get<2>(visit(root)); }
+  bool isValidBST(TreeNode *root) {
+    Context ctx;
+    visit(root, ctx);
+    return ctx.valid;
+  }
 };
 // @lc code=end
+} // namespace
 
 #include <doctest/doctest.h>
 
@@ -42,4 +55,10 @@ TEST_CASE("0098") {
   REQUIRE_FALSE(Solution().isValidBST(t1));
   auto t2 = stringToTreeNode("[3,null,30,10,null,null,15,null,45]");
   REQUIRE_FALSE(Solution().isValidBST(t2));
+  auto t3 = stringToTreeNode("[5,4,6,null,null,3,7]");
+  REQUIRE_FALSE(Solution().isValidBST(t3));
+  auto t4 = stringToTreeNode("[2147483647]");
+  REQUIRE(Solution().isValidBST(t4));
+  auto t5 = stringToTreeNode("[-2147483658]");
+  REQUIRE(Solution().isValidBST(t5));
 }

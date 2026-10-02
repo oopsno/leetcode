@@ -14,16 +14,16 @@ public:
       return false;
     }
     const auto rest = sum - root->val;
-    if (root->left and root->right) {
-      return hasPathSum(root->left, rest) or hasPathSum(root->right, rest);
-    }
-    if (root->left) {
+    if (root->left && root->right) {
+      return hasPathSum(root->left, rest) || hasPathSum(root->right, rest);
+    } else if (root->left) {
       return hasPathSum(root->left, rest);
-    }
-    if (root->right) {
+    } else if (root->right) {
       return hasPathSum(root->right, rest);
+    } else {
+      // 叶子结点
+      return rest == 0;
     }
-    return rest == 0;
   }
 };
 // @lc code=end

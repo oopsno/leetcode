@@ -4,61 +4,61 @@
  * [538] 把二叉搜索树转换为累加树
  */
 
-/**
- * Definition for a binary tree node.
- */
-struct TreeNode {
-  int val;
-  TreeNode *left;
-  TreeNode *right;
-  TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+#include "leetcode/tree-node.h"
+
+namespace {
+// @lc code=start
+struct Context {
+  int accum = 0;
 };
 
-// @lc code=start
-#include <tuple>
-
 class Solution {
-private:
-  void convert(TreeNode *root, int acc = 0) {
+public:
+  void visit(TreeNode *root, Context &ctx) {
     if (root == nullptr) {
       return;
     }
-    TreeNode *node = root;
-    while (node != nullptr) {
-      // Morris 遍历
-      // 1. 如果当前节点的右子节点为空，处理当前节点，并遍历当前节点的左子节点；
-      if (node->right == nullptr) {
-        acc += node->val;
-        node->val = acc;
-        node = node->left;
-      } else {
-        // 2.
-        // 如果当前节点的右子节点不为空，找到当前节点右子树的最左节点（该节点为当前节点中序遍历的前驱节点）
-        TreeNode *leaf = node->right;
-        while (leaf->left != nullptr and leaf->left != node) {
-          leaf = leaf->left;
-        }
-        // 2a.
-        // 如果最左节点的左指针为空，将最左节点的左指针指向当前节点，遍历当前节点的右子节点；
-        if (leaf->left == nullptr) {
-          leaf->left = node;
-          node = node->right;
-        } else {
-          // 2b.
-          // 如果最左节点的左指针不为空，将最左节点的左指针重新置为空（恢复树的原状），处理当前节点，并将当前节点置为其左节点
-          leaf->left = nullptr;
-          acc += node->val;
-          node->val = acc;
-          node = node->left;
-        }
-      }
-    }
+    visit(root->right, ctx);
+    ctx.accum = root->val = ctx.accum + root->val;
+    visit(root->left, ctx);
   }
-
-public:
   TreeNode *convertBST(TreeNode *root) {
-    convert(root);
+    Context ctx;
+    visit(root, ctx);
     return root;
   }
 };
 // @lc code=end
+} // namespace
+
+#include <doctest/doctest.h>
+
+TEST_CASE("0538") {
+  using std::operator""s;
+  SUBCASE("Example 1") {
+    auto root =
+        stringToTreeNode("[4,1,6,0,2,5,7,null,null,null,3,null,null,null,8]");
+    auto result = Solution().convertBST(root);
+    auto expected =
+        "[30,36,21,36,35,26,15,null,null,null,33,null,null,null,8]"s;
+    REQUIRE_EQ(treeNodeToString(result), expected);
+  }
+  SUBCASE("Example 2") {
+    auto root = stringToTreeNode("[0,null,1]");
+    auto result = Solution().convertBST(root);
+    auto expected = "[1,null,1]"s;
+    REQUIRE_EQ(treeNodeToString(result), expected);
+  }
+  SUBCASE("Example 3") {
+    auto root = stringToTreeNode("[1,0,2]");
+    auto result = Solution().convertBST(root);
+    auto expected = stringToTreeNode("[3,3,2]");
+    REQUIRE_EQ(treeNodeToString(result), treeNodeToString(expected));
+  }
+  SUBCASE("Example 4") {
+    auto root = stringToTreeNode("[3,2,4,1]");
+    auto result = Solution().convertBST(root);
+    auto expected = stringToTreeNode("[7,9,4,10]");
+    REQUIRE_EQ(treeNodeToString(result), treeNodeToString(expected));
+  }
+}

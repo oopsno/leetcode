@@ -12,6 +12,46 @@
 #include <optional>
 #include <vector>
 
+namespace recurrsive {
+struct Context {
+  std::vector<int> modes;
+  int max_freq = 0;
+  int current_freq = 0;
+  int current_mode = 0;
+};
+
+class Solution {
+public:
+  void visit(TreeNode *root, Context &ctx) {
+    if (root == nullptr) {
+      return;
+    }
+    visit(root->left, ctx);
+    if (ctx.current_mode == root->val) {
+      ctx.current_freq += 1;
+    } else {
+      ctx.current_freq = 1;
+      ctx.current_mode = root->val;
+    }
+    if (ctx.current_freq == ctx.max_freq) {
+      ctx.modes.push_back(ctx.current_mode);
+    }
+    if (ctx.current_freq > ctx.max_freq) {
+      ctx.max_freq = ctx.current_freq;
+      ctx.modes = {ctx.current_mode};
+    }
+    visit(root->right, ctx);
+  }
+  std::vector<int> findMode(TreeNode *root) {
+    Context ctx;
+    visit(root, ctx);
+    return ctx.modes;
+  }
+};
+
+} // namespace recurrsive
+
+namespace morris {
 class Solution {
 private:
   static inline void visit(std::vector<int> &results,
@@ -65,11 +105,24 @@ public:
     return results;
   }
 };
+} // namespace morris
 // @lc code=end
 
+#include "leetcode/runner.h"
 #include <doctest/doctest.h>
 
-TEST_CASE("0501") {
-  auto *tree = stringToTreeNode("[1,null,2,2]");
-  REQUIRE_EQ(Solution().findMode(tree), std::vector{2});
+TEST_CASE_TEMPLATE("0501", Solution, recurrsive::Solution, morris::Solution) {
+  auto f = Runner(501, &Solution::findMode);
+  SUBCASE("example") {
+    auto *tree = stringToTreeNode("[1,null,2,2]");
+    REQUIRE_EQ(f(tree), std::vector{2});
+  }
+  SUBCASE("unary") {
+    auto *tree = stringToTreeNode("[0]");
+    REQUIRE_EQ(f(tree), std::vector{0});
+  }
+  SUBCASE("linear") {
+    auto *tree = stringToTreeNode("[1,null,2]");
+    REQUIRE_EQ(f(tree), std::vector{1, 2});
+  }
 }
